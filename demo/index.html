@@ -1080,6 +1080,69 @@
     padding: 2px;
   }
   .invoice-remove:hover { color: #e2483d; }
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(20,26,33,0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+  }
+  .modal-box {
+    background: #fff;
+    border-radius: 8px;
+    padding: 24px;
+    width: 420px;
+    max-width: 90vw;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+  }
+  .modal-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 14px;
+  }
+  .modal-label {
+    display: block;
+    font-size: 13px;
+    color: var(--text-dark);
+    margin-bottom: 6px;
+  }
+  .modal-label .req {
+    color: #e2483d;
+    margin-left: 2px;
+  }
+  .modal-desc {
+    font-size: 13px;
+    color: var(--text-gray);
+    background: #f5f6f8;
+    border-radius: 4px;
+    padding: 8px 10px;
+    margin-bottom: 12px;
+  }
+  .modal-body textarea {
+    width: 100%;
+    border: 1px solid #dcdfe3;
+    border-radius: 4px;
+    padding: 8px 10px;
+    font-size: 13px;
+    font-family: inherit;
+    color: var(--text-dark);
+    resize: vertical;
+    box-sizing: border-box;
+  }
+  .modal-error {
+    color: #e2483d;
+    font-size: 12px;
+    margin-top: 6px;
+  }
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 18px;
+  }
   .radio-group {
     display: flex;
     gap: 18px;
@@ -1460,6 +1523,7 @@
         <div class="dropdown" id="pageDropdown">
           <button class="dropdown-item" onclick="goToPage('overview')">總覽</button>
           <button class="dropdown-item" onclick="goToPage('admin-form-list')">表單申請／簽核</button>
+          <button class="dropdown-item" onclick="goToPage('remit-list')">匯款資料維護</button>
         </div>
       </div>
       <span class="app-label" id="topbarAppLabel">總覽</span>
@@ -1656,7 +1720,7 @@
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-draft">草稿</span></td>
               <td></td>
-              <td><button class="btn btn-outline btn-sm action-btn" onclick="goToPage('admin-form-detail')">編輯</button></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
               <td>尚未產生單號</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>租金支出</td>
@@ -1669,7 +1733,7 @@
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-rejected">已退回</span></td>
               <td></td>
-              <td><button class="btn btn-outline btn-sm action-btn" onclick="goToPage('admin-form-detail')">編輯</button></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
               <td>CBS-PAY-2026-0033</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>文具用品</td>
@@ -1682,7 +1746,7 @@
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-approved">已核准</span></td>
               <td></td>
-              <td><button class="btn btn-outline btn-sm action-btn" onclick="goToPage('admin-form-detail')">編輯</button></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
               <td>CBS-PAY-2026-0030</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>郵資</td>
@@ -1695,7 +1759,7 @@
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-rejected">已退回</span></td>
               <td></td>
-              <td><button class="btn btn-outline btn-sm action-btn" onclick="goToPage('admin-form-detail')">編輯</button></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
               <td>CBS-PAY-2026-0029</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>郵電費</td>
@@ -1708,7 +1772,7 @@
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-rejected">已退回</span></td>
               <td></td>
-              <td><button class="btn btn-outline btn-sm action-btn" onclick="goToPage('admin-form-detail')">編輯</button></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
               <td>CBS-PAY-2026-0028</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>旅費</td>
@@ -1721,7 +1785,7 @@
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-applying">申請中</span></td>
               <td>王課長</td>
-              <td><button class="btn btn-outline btn-sm action-btn" onclick="goToPage('admin-form-detail')">編輯</button></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
               <td>CBS-PAY-2026-0016</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>修繕費</td>
@@ -1734,7 +1798,7 @@
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-applying">申請中</span></td>
               <td>王課長</td>
-              <td><button class="btn btn-outline btn-sm action-btn" onclick="goToPage('admin-form-detail')">編輯</button></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
               <td>CBS-PAY-2026-0015</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>廣告費</td>
@@ -1747,7 +1811,7 @@
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-draft">草稿</span></td>
               <td></td>
-              <td><button class="btn btn-outline btn-sm action-btn" onclick="goToPage('admin-form-detail')">編輯</button></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
               <td>尚未產生單號</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>保險費</td>
@@ -1760,7 +1824,7 @@
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-applying">申請中</span></td>
               <td>王課長</td>
-              <td><button class="btn btn-outline btn-sm action-btn" onclick="goToPage('admin-form-detail')">編輯</button></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
               <td>CBS-PAY-2026-0014</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>交際費</td>
@@ -1773,7 +1837,7 @@
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-applying">申請中</span></td>
               <td>王課長</td>
-              <td><button class="btn btn-outline btn-sm action-btn" onclick="goToPage('admin-form-detail')">編輯</button></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
               <td>CBS-PAY-2026-0013</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>職工福利</td>
@@ -1786,7 +1850,7 @@
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-applying">申請中</span></td>
               <td>王課長</td>
-              <td><button class="btn btn-outline btn-sm action-btn" onclick="goToPage('admin-form-detail')">編輯</button></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
               <td>CBS-PAY-2026-0012</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>交通費</td>
@@ -1799,7 +1863,7 @@
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-applying">申請中</span></td>
               <td>王課長</td>
-              <td><button class="btn btn-outline btn-sm action-btn" onclick="goToPage('admin-form-detail')">編輯</button></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
               <td>CBS-PAY-2026-0006</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>雜項費用</td>
@@ -1812,7 +1876,7 @@
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-applying">申請中</span></td>
               <td>王課長</td>
-              <td><button class="btn btn-outline btn-sm action-btn" onclick="goToPage('admin-form-detail')">編輯</button></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
               <td>CBS-PAY-2026-0005</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>租金支出</td>
@@ -1825,7 +1889,7 @@
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-approved">已核准</span></td>
               <td></td>
-              <td><button class="btn btn-outline btn-sm action-btn" onclick="goToPage('admin-form-detail')">編輯</button></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
               <td>CBS-PAY-2026-0004</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>文具用品</td>
@@ -1838,7 +1902,7 @@
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-signing">簽核中</span></td>
               <td>Carlson</td>
-              <td><button class="btn btn-outline btn-sm action-btn" onclick="goToPage('admin-form-detail')">編輯</button></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
               <td>CBS-PAY-2026-0003</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>郵資</td>
@@ -1861,7 +1925,7 @@
     <!-- 新增請購單 (請款單詳細頁) -->
     <div class="page" id="page-admin-form-detail">
       <div class="form-action-bar">
-        <div class="form-action-bar-left">
+        <div class="form-action-bar-left" id="formActionBarDefault">
           <button class="btn btn-outline" onclick="goToPage('admin-form-list')">返回</button>
           <button class="btn btn-outline">儲存草稿</button>
           <button class="btn btn-primary">送出簽核</button>
@@ -1869,7 +1933,13 @@
           <a class="icon-link">&#128424; 列印</a>
           <a class="icon-link">&#128203; 複製</a>
         </div>
-        <div class="stepper">
+        <div class="form-action-bar-left" id="formActionBarSign" style="display:none;">
+          <button class="btn btn-outline" onclick="goToPage('admin-form-list')">返回</button>
+          <button class="btn btn-primary" onclick="openSignAction('approve')">核准本關</button>
+          <button class="btn btn-outline" onclick="openSignAction('reject-resign')">退回(重新簽核)</button>
+          <button class="btn btn-outline" onclick="openSignAction('reject-thislevel')">退回(僅本關重審)</button>
+        </div>
+        <div class="stepper" id="formStepper">
           <span class="step active">草稿</span>
           <span class="step">申請中</span>
           <span class="step">簽核中</span>
@@ -1879,7 +1949,7 @@
       </div>
 
       <div class="form-card">
-        <div class="form-doc-title">新增請購單</div>
+        <div class="form-doc-title" id="formDocTitle">新增請購單</div>
 
         <div class="form-section-heading">申請資訊</div>
 
@@ -1887,15 +1957,15 @@
           <div>
             <div class="form-field">
               <label><span class="req">*</span>申請人</label>
-              <span class="static-text">王曉明 (A123)</span>
+              <span class="static-text" id="applicantNameText">王曉明 (A123)</span>
             </div>
             <div class="form-field">
               <label><span class="req">*</span>申請人單位</label>
-              <span class="static-text">CBS營業本部 / CBS營業一課</span>
+              <span class="static-text" id="applicantUnitText">CBS營業本部 / CBS營業一課</span>
             </div>
             <div class="form-field">
               <label><span class="req">*</span>申請日期</label>
-              <input type="date" value="2026-08-14">
+              <input type="date" id="applyDate" value="2026-08-14">
             </div>
             <div class="form-field">
               <label><span class="req">*</span>請款公司</label>
@@ -1905,7 +1975,7 @@
             </div>
             <div class="form-field">
               <label><span class="req">*</span>支出科目</label>
-              <select>
+              <select id="expenseCategory">
                 <option value="">請選擇支出科目</option>
                 <option>文具用品</option>
                 <option>水電費</option>
@@ -2023,7 +2093,7 @@
             <div class="form-field form-field-top">
               <label>發票號碼</label>
               <div class="attachment-block">
-                <div class="invoice-input-row">
+                <div class="invoice-input-row form-edit-control">
                   <input type="text" id="invoiceInput" placeholder="請輸入發票號碼" onkeydown="if(event.key==='Enter'){event.preventDefault();addInvoiceNumber();}">
                   <button type="button" class="btn btn-outline btn-sm" onclick="addInvoiceNumber()">＋ 新增</button>
                 </div>
@@ -2038,11 +2108,11 @@
                   <div class="attachment-item">
                     <span class="attachment-icon">PDF</span>
                     <span class="attachment-name" title="AI 工具申購單_v1_20260813.pdf">AI 工具申購單_v1_20260813.pdf</span>
-                    <button type="button" class="attachment-remove" title="刪除" onclick="this.closest('.attachment-item').remove()">&times;</button>
+                    <button type="button" class="attachment-remove form-edit-control" title="刪除" onclick="this.closest('.attachment-item').remove()">&times;</button>
                   </div>
                 </div>
                 <input type="file" id="attachmentInput" multiple style="display:none;" onchange="handleAttachmentUpload(this)">
-                <button type="button" class="attachment-upload-btn" onclick="document.getElementById('attachmentInput').click()">&#128206; 選擇上傳附件</button>
+                <button type="button" class="attachment-upload-btn form-edit-control" onclick="document.getElementById('attachmentInput').click()">&#128206; 選擇上傳附件</button>
                 <span class="field-hint">※ 如有需於簽核時一併審閱之資料,請於此處檢附。<br>※ 單據請確認載有公司全銜、統一編號,並加蓋對方之統一發票專用章或免用統一發票專用章。</span>
               </div>
             </div>
@@ -2062,11 +2132,11 @@
           </thead>
           <tbody id="detailRows"></tbody>
         </table>
-        <span class="add-row-link" onclick="addDetailRow()">+ 加入資料行</span>
+        <span class="add-row-link form-edit-control" onclick="addDetailRow()">+ 加入資料行</span>
 
         <div class="form-total">
           <span>請款金額(含稅):</span>
-          <span class="amount">NT$ 0</span>
+          <span class="amount" id="formTotalAmount">NT$ 0</span>
         </div>
 
       </div>
@@ -2088,7 +2158,7 @@
                 <th>意見</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="approvalTableBody">
               <tr class="approval-row-approved">
                 <td class="cell-center step-no">1</td>
                 <td><span class="status-badge status-approved">已核准</span></td>
@@ -2113,6 +2183,7 @@
 
       <div class="history-section">
         <div class="form-section-heading">簽核歷程</div>
+        <div id="historyItems">
         <div class="history-item">
           <span class="history-time">2026-07-23 19:25</span>
           <span class="history-desc">送出簽核</span>
@@ -2124,6 +2195,202 @@
         <div class="history-item">
           <span class="history-time">2026-08-13 10:50</span>
           <span class="history-desc">核准(部級主管)— 王部長 <b>&#10003; 全簽通過(已核准)</b></span>
+        </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 匯款資料管理列表 -->
+    <div class="page" id="page-remit-list">
+      <div class="list-title-row">
+        <h2 class="section-title">匯款資料管理</h2>
+        <button class="btn btn-primary" onclick="goToPage('remit-detail', 'new')">+ 新增</button>
+      </div>
+      <div class="advanced-filter-panel" id="remitFilterPanel">
+        <div class="filter-grid">
+          <div class="form-field">
+            <label>狀態</label>
+            <select>
+              <option value="">全部</option>
+              <option>使用中</option>
+              <option>停用</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>匯款帳戶類型</label>
+            <select>
+              <option value="">全部</option>
+              <option>公司行號或個人帳戶</option>
+              <option>員工薪資帳戶</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>匯款對象名稱</label>
+            <input type="text" placeholder="輸入匯款對象名稱關鍵字查詢">
+          </div>
+          <div class="form-field">
+            <label>備註</label>
+            <input type="text" placeholder="輸入備註關鍵字查詢">
+          </div>
+        </div>
+        <div class="filter-actions">
+          <button class="btn btn-outline btn-sm">清除</button>
+          <button class="btn btn-primary btn-sm">查詢</button>
+        </div>
+      </div>
+
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>系統編號</th>
+              <th>狀態</th>
+              <th style="width:70px;">操作</th>
+              <th>匯款對象名稱</th>
+              <th>匯款帳戶類型</th>
+              <th>備註</th>
+            </tr>
+          </thead>
+          <tbody id="remit-rows">
+            <tr>
+              <td>RM-0001</td>
+              <td><span class="status-badge status-approved">使用中</span></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="goToPage('remit-detail', 'edit')">編輯</button></td>
+              <td>誠品股份有限公司</td>
+              <td>公司行號或個人帳戶</td>
+              <td class="truncate-cell" title="文具採購廠商">文具採購廠商</td>
+            </tr>
+            <tr>
+              <td>RM-0002</td>
+              <td><span class="status-badge status-approved">使用中</span></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="goToPage('remit-detail', 'edit')">編輯</button></td>
+              <td>王小明(A101)</td>
+              <td>員工薪資帳戶</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>RM-0003</td>
+              <td><span class="status-badge status-draft">停用</span></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="goToPage('remit-detail', 'edit')">編輯</button></td>
+              <td>大苑子有限公司</td>
+              <td>公司行號或個人帳戶</td>
+              <td class="truncate-cell" title="已終止合作">已終止合作</td>
+            </tr>
+            <tr>
+              <td>RM-0004</td>
+              <td><span class="status-badge status-approved">使用中</span></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="goToPage('remit-detail', 'edit')">編輯</button></td>
+              <td>王課長(A045)</td>
+              <td>員工薪資帳戶</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>RM-0005</td>
+              <td><span class="status-badge status-approved">使用中</span></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="goToPage('remit-detail', 'edit')">編輯</button></td>
+              <td>中華電信股份有限公司</td>
+              <td>公司行號或個人帳戶</td>
+              <td class="truncate-cell" title="電信費">電信費</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pager">
+        <button class="pager-arrow">&#8249;</button>
+        <span class="pager-page">1</span>
+        <button class="pager-arrow">&#8250;</button>
+      </div>
+    </div>
+
+    <!-- 新增／編輯匯款資料 -->
+    <div class="page" id="page-remit-detail">
+      <div class="form-action-bar">
+        <div class="form-action-bar-left">
+          <button class="btn btn-outline" onclick="goToPage('remit-list')">返回</button>
+          <button class="btn btn-primary">儲存異動</button>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <div class="form-doc-title" id="remitDocTitle">新增匯款資料</div>
+
+        <div class="form-grid">
+          <div>
+            <div class="form-field">
+              <label><span class="req">*</span>狀態</label>
+              <div class="radio-group">
+                <label><input type="radio" name="remitStatus" id="remitStatusActive" checked> 使用中</label>
+                <label><input type="radio" name="remitStatus" id="remitStatusInactive"> 停用</label>
+              </div>
+              <span class="field-hint">影響是否出現在申請表單選項中。</span>
+            </div>
+            <div class="form-field">
+              <label><span class="req">*</span>匯款對象名稱</label>
+              <input type="text" id="remitTargetName" placeholder="請輸入匯款對象名稱">
+              <span class="field-hint">僅供人員辨識資料使用。</span>
+            </div>
+            <div class="form-field">
+              <label>統編</label>
+              <input type="text" id="remitTaxId" placeholder="請輸入統一編號">
+            </div>
+            <div class="form-field">
+              <label><span class="req">*</span>匯款帳戶類型</label>
+              <div class="radio-group">
+                <label><input type="radio" name="remitAccountType" id="remitAccountTypeCompany" checked> 公司行號或個人帳戶</label>
+                <label><input type="radio" name="remitAccountType" id="remitAccountTypeSalary"> 員工薪資帳戶</label>
+              </div>
+            </div>
+            <div class="form-field">
+              <label><span class="req">*</span>匯款帳號</label>
+              <input type="text" id="remitAccountNo" inputmode="numeric" placeholder="請輸入匯款帳號(純數字)" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+            </div>
+            <div class="form-field">
+              <label><span class="req">*</span>匯款戶名</label>
+              <input type="text" id="remitAccountName" placeholder="請輸入匯款戶名">
+            </div>
+            <div class="form-field">
+              <label><span class="req">*</span>銀行名稱/代碼</label>
+              <select id="remitBankName">
+                <option value="">請選擇銀行</option>
+                <option>004 台灣銀行</option>
+                <option>005 土地銀行</option>
+                <option>006 合作金庫商業銀行</option>
+                <option>007 第一商業銀行</option>
+                <option>008 華南商業銀行</option>
+                <option>009 彰化商業銀行</option>
+                <option>012 台北富邦商業銀行</option>
+                <option>013 國泰世華商業銀行</option>
+                <option>017 兆豐國際商業銀行</option>
+                <option>050 台灣中小企業銀行</option>
+                <option>700 中華郵政</option>
+                <option>803 聯邦商業銀行</option>
+                <option>805 遠東國際商業銀行</option>
+                <option>806 元大商業銀行</option>
+                <option>807 永豐商業銀行</option>
+                <option>808 玉山商業銀行</option>
+                <option>809 凱基商業銀行</option>
+                <option>812 台新國際商業銀行</option>
+                <option>822 中國信託商業銀行</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label><span class="req">*</span>分行名稱</label>
+              <select id="remitBranchName">
+                <option value="">請選擇分行</option>
+                <option>營業部</option>
+                <option>城東分行</option>
+                <option>城中分行</option>
+                <option>信義分行</option>
+                <option>南京東路分行</option>
+                <option>大安分行</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label>備註</label>
+              <input type="text" id="remitNote" placeholder="請輸入備註">
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -2276,6 +2543,22 @@
     </div>
   </div>
 
+  <div class="modal-overlay" id="signModalOverlay" style="display:none;">
+    <div class="modal-box">
+      <div class="modal-title" id="signModalTitle">核准本關</div>
+      <div class="modal-body">
+        <div class="modal-desc" id="signModalDesc" style="display:none;"></div>
+        <label class="modal-label" id="signModalLabel">簽核意見(選填)</label>
+        <textarea id="signModalComment" rows="4" placeholder="請輸入簽核意見"></textarea>
+        <div class="modal-error" id="signModalError" style="display:none;">請輸入退回原因</div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeSignModal()">取消</button>
+        <button class="btn btn-primary" onclick="confirmSignAction()">確認</button>
+      </div>
+    </div>
+  </div>
+
 <script>
   function toggleDropdown(id) {
     var dd = document.getElementById(id);
@@ -2321,7 +2604,7 @@
     goToPage('overview');
   }
 
-  function goToPage(id) {
+  function goToPage(id, mode) {
     document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
     document.getElementById('page-' + id).classList.add('active');
 
@@ -2336,6 +2619,9 @@
     if (id === 'overview' || id === 'profile') {
       appLabelEl.textContent = id === 'overview' ? '總覽' : '';
       submenuGroupEl.style.display = 'none';
+    } else if (id === 'remit-list' || id === 'remit-detail') {
+      appLabelEl.textContent = '匯款資料維護';
+      submenuGroupEl.style.display = 'none';
     } else {
       appLabelEl.textContent = '表單申請／簽核';
       submenuGroupEl.style.display = '';
@@ -2349,30 +2635,247 @@
       crumbBar.innerHTML = home + sep + appLevel + sep + financeLevel + sep +
         '<span class="crumb-item active">請購單管理</span>';
     } else if (id === 'admin-form-detail') {
+      var lastCrumbText = (mode === 'sign') ? '簽核請購單' : '新增請購單';
       crumbBar.innerHTML = home + sep + appLevel + sep + financeLevel + sep +
         '<span class="crumb-item" onclick="goToPage(\'admin-form-list\')">請購單管理</span>' + sep +
-        '<span class="crumb-item active">新增請購單</span>';
+        '<span class="crumb-item active">' + lastCrumbText + '</span>';
     } else if (id === 'eng-form') {
       crumbBar.innerHTML = home + sep + appLevel + sep + engLevel + sep +
         '<span class="crumb-item active">個人AI工具申購表單管理</span>';
     } else if (id === 'all-signed-forms') {
       crumbBar.innerHTML = home + sep + appLevel + sep +
         '<span class="crumb-item active">全部表單紀錄</span>';
+    } else if (id === 'remit-list') {
+      crumbBar.innerHTML = home + sep + '<span class="crumb-item active">匯款資料管理</span>';
+    } else if (id === 'remit-detail') {
+      var remitCrumbText = (mode === 'edit') ? '編輯匯款資料' : '新增匯款資料';
+      crumbBar.innerHTML = home + sep +
+        '<span class="crumb-item" onclick="goToPage(\'remit-list\')">匯款資料管理</span>' + sep +
+        '<span class="crumb-item active">' + remitCrumbText + '</span>';
     }
 
     if (id === 'admin-form-list' && document.getElementById('totalCount')) {
       updateSelectionBar();
     }
 
+    if (id === 'admin-form-detail') {
+      setupFormDetailMode(mode);
+    }
+
+    if (id === 'remit-detail') {
+      setupRemitDetailMode(mode);
+    }
+
     document.querySelectorAll('.dropdown.open').forEach(function(d) { d.classList.remove('open'); });
   }
 
-  function addDetailRow() {
+  function openFormDetail() {
+    var activeTab = document.querySelector('#page-admin-form-list .page-tab.active');
+    var label = activeTab ? activeTab.textContent.trim() : '';
+    if (label === '待簽核表單') {
+      goToPage('admin-form-detail', 'sign');
+    } else {
+      goToPage('admin-form-detail');
+    }
+  }
+
+  function setStepperActive(stepLabel) {
+    document.querySelectorAll('#formStepper .step').forEach(function(s) {
+      s.classList.toggle('active', s.textContent.trim() === stepLabel);
+    });
+  }
+
+  function setupFormDetailMode(mode) {
+    var isSign = (mode === 'sign');
+    document.getElementById('formDocTitle').textContent = isSign ? '簽核請購單 (CBS-PAY-2026-0033)' : '新增請購單';
+    document.getElementById('formActionBarDefault').style.display = isSign ? 'none' : 'flex';
+    document.getElementById('formActionBarSign').style.display = isSign ? 'flex' : 'none';
+
+    if (isSign) {
+      loadSignSampleData();
+      setApprovalPending();
+    } else {
+      resetFormToNew();
+      resetApprovalDefault();
+    }
+
+    var card = document.querySelector('#page-admin-form-detail .form-card');
+    card.querySelectorAll('input, select, textarea').forEach(function(el) { el.disabled = isSign; });
+    card.querySelectorAll('.form-edit-control').forEach(function(el) {
+      el.style.display = isSign ? 'none' : '';
+    });
+
+    setStepperActive(isSign ? '簽核中' : '草稿');
+  }
+
+  function loadSignSampleData() {
+    document.getElementById('applicantNameText').textContent = '王小明 (A101)';
+    document.getElementById('applicantUnitText').textContent = 'CBS營業本部 / CBS營業一課';
+    document.getElementById('applyDate').value = '2026-08-13';
+    document.getElementById('expenseCategory').value = '文具用品';
+    document.getElementById('paymentMethod').value = '匯款';
+    updatePaymentMethodFields();
+    document.getElementById('paymentTerms').value = '月結30天';
+    updatePaymentTermsFields();
+    document.getElementById('payeeCompany').checked = true;
+    updatePayeeFields();
+    document.getElementById('remitAccount').value = '1234567890123';
+    document.getElementById('remitNameText').value = '王小明';
+    document.getElementById('bankName').value = '822 中國信託商業銀行';
+    document.getElementById('branchName').value = '城東分行';
+    document.getElementById('feeBearerCompany').checked = true;
+
+    var invoiceList = document.getElementById('invoiceList');
+    invoiceList.innerHTML = '';
+    var invoiceItem = document.createElement('span');
+    invoiceItem.className = 'invoice-item';
+    invoiceItem.innerHTML = '24121106 <button type="button" class="invoice-remove form-edit-control" title="刪除" onclick="this.closest(\'.invoice-item\').remove()">&times;</button>';
+    invoiceList.appendChild(invoiceItem);
+
+    var tbody = document.getElementById('detailRows');
+    tbody.innerHTML = '';
+    addDetailRow('文具用品採購', '100');
+    document.getElementById('formTotalAmount').textContent = 'NT$ 100';
+  }
+
+  function resetFormToNew() {
+    document.getElementById('applicantNameText').textContent = '王曉明 (A123)';
+    document.getElementById('applicantUnitText').textContent = 'CBS營業本部 / CBS營業一課';
+    document.getElementById('applyDate').value = '2026-08-14';
+    document.getElementById('expenseCategory').value = '';
+    document.getElementById('paymentMethod').value = '';
+    updatePaymentMethodFields();
+    document.getElementById('payeeCompany').checked = true;
+    updatePayeeFields();
+    document.getElementById('feeBearerCompany').checked = true;
+    document.getElementById('invoiceList').innerHTML = '';
+    document.getElementById('detailRows').innerHTML = '';
+    document.getElementById('formTotalAmount').textContent = 'NT$ 0';
+  }
+
+  function setupRemitDetailMode(mode) {
+    var isEdit = (mode === 'edit');
+    document.getElementById('remitDocTitle').textContent = isEdit ? '編輯匯款資料' : '新增匯款資料';
+    if (isEdit) {
+      loadRemitSampleData();
+    } else {
+      resetRemitForm();
+    }
+  }
+
+  function loadRemitSampleData() {
+    document.getElementById('remitStatusActive').checked = true;
+    document.getElementById('remitTargetName').value = '誠品股份有限公司';
+    document.getElementById('remitTaxId').value = '12345678';
+    document.getElementById('remitAccountTypeCompany').checked = true;
+    document.getElementById('remitAccountNo').value = '1234567890123';
+    document.getElementById('remitAccountName').value = '誠品股份有限公司';
+    document.getElementById('remitBankName').value = '822 中國信託商業銀行';
+    document.getElementById('remitBranchName').value = '城東分行';
+    document.getElementById('remitNote').value = '文具採購廠商';
+  }
+
+  function resetRemitForm() {
+    document.getElementById('remitStatusActive').checked = true;
+    document.getElementById('remitTargetName').value = '';
+    document.getElementById('remitTaxId').value = '';
+    document.getElementById('remitAccountTypeCompany').checked = true;
+    document.getElementById('remitAccountNo').value = '';
+    document.getElementById('remitAccountName').value = '';
+    document.getElementById('remitBankName').value = '';
+    document.getElementById('remitBranchName').value = '';
+    document.getElementById('remitNote').value = '';
+  }
+
+  function setApprovalPending() {
+    document.getElementById('approvalTableBody').innerHTML =
+      '<tr class="approval-row-approved">' +
+        '<td class="cell-center step-no">1</td>' +
+        '<td><span class="status-badge status-approved">已核准</span></td>' +
+        '<td>王課長</td><td>王課長</td><td>2026-08-13 09:20:11</td><td></td>' +
+      '</tr>' +
+      '<tr>' +
+        '<td class="cell-center step-no">2</td>' +
+        '<td><span class="status-badge status-applying">待簽核</span></td>' +
+        '<td>王部長</td><td></td><td></td><td></td>' +
+      '</tr>';
+    document.getElementById('historyItems').innerHTML =
+      '<div class="history-item"><span class="history-time">2026-08-13 09:00</span><span class="history-desc">送出簽核</span></div>' +
+      '<div class="history-item"><span class="history-time">2026-08-13 09:20</span><span class="history-desc">核准(請款 / CBS 課級主管)— 王課長</span></div>';
+  }
+
+  function resetApprovalDefault() {
+    document.getElementById('approvalTableBody').innerHTML =
+      '<tr class="approval-row-approved">' +
+        '<td class="cell-center step-no">1</td>' +
+        '<td><span class="status-badge status-approved">已核准</span></td>' +
+        '<td>王課長</td><td>王課長</td><td>2026-07-27 23:52:36</td><td></td>' +
+      '</tr>' +
+      '<tr class="approval-row-approved">' +
+        '<td class="cell-center step-no">2</td>' +
+        '<td><span class="status-badge status-approved">已核准</span></td>' +
+        '<td>王部長</td><td>王部長</td><td>2026-08-13 10:50:53</td><td></td>' +
+      '</tr>';
+    document.getElementById('historyItems').innerHTML =
+      '<div class="history-item"><span class="history-time">2026-07-23 19:25</span><span class="history-desc">送出簽核</span></div>' +
+      '<div class="history-item"><span class="history-time">2026-07-27 23:52</span><span class="history-desc">核准(請款 / CBS 課級主管)— 王課長</span></div>' +
+      '<div class="history-item"><span class="history-time">2026-08-13 10:50</span><span class="history-desc">核准(部級主管)— 王部長 <b>&#10003; 全簽通過(已核准)</b></span></div>';
+  }
+
+  var pendingSignAction = null;
+
+  function openSignAction(action) {
+    pendingSignAction = action;
+    var titles = {
+      'approve': '核准本關',
+      'reject-resign': '退回(重新簽核)',
+      'reject-thislevel': '退回(僅本關重審)'
+    };
+    var labels = {
+      'approve': '簽核意見(選填)',
+      'reject-resign': '退回原因 <span class="req">*</span>',
+      'reject-thislevel': '退回原因 <span class="req">*</span>'
+    };
+    var descriptions = {
+      'approve': '',
+      'reject-resign': '申請人修正並重新送出後,將由第一關重新進行簽核。',
+      'reject-thislevel': '申請人修正並重新送出後,將直接送回本關重審,無須重新經過前序簽核關卡。'
+    };
+    document.getElementById('signModalTitle').textContent = titles[action];
+    document.getElementById('signModalLabel').innerHTML = labels[action];
+    var descEl = document.getElementById('signModalDesc');
+    descEl.textContent = descriptions[action];
+    descEl.style.display = descriptions[action] ? 'block' : 'none';
+    document.getElementById('signModalComment').value = '';
+    document.getElementById('signModalError').style.display = 'none';
+    document.getElementById('signModalOverlay').style.display = 'flex';
+  }
+
+  function closeSignModal() {
+    document.getElementById('signModalOverlay').style.display = 'none';
+    pendingSignAction = null;
+  }
+
+  function confirmSignAction() {
+    var comment = document.getElementById('signModalComment').value.trim();
+    var errorEl = document.getElementById('signModalError');
+    if (pendingSignAction !== 'approve' && !comment) {
+      errorEl.style.display = 'block';
+      return;
+    }
+    errorEl.style.display = 'none';
+    closeSignModal();
+    goToPage('admin-form-list');
+  }
+
+  function addDetailRow(summary, amount) {
     var tbody = document.getElementById('detailRows');
     var tr = document.createElement('tr');
-    tr.innerHTML = '<td><input type="text" placeholder="摘要" style="width:100%;border:1px solid #dcdfe3;border-radius:4px;padding:6px 8px;font-size:13px;font-family:inherit;"></td>' +
-      '<td class="cell-right"><input type="text" placeholder="0" style="width:120px;text-align:right;border:1px solid #dcdfe3;border-radius:4px;padding:6px 8px;font-size:13px;font-family:inherit;"></td>' +
-      '<td class="cell-action"><button type="button" class="row-delete-btn" title="刪除此列" onclick="this.closest(\'tr\').remove()">&times;</button></td>';
+    var summaryVal = summary ? ' value="' + summary + '"' : '';
+    var amountVal = amount ? ' value="' + amount + '"' : '';
+    tr.innerHTML = '<td><input type="text" placeholder="摘要"' + summaryVal + ' style="width:100%;border:1px solid #dcdfe3;border-radius:4px;padding:6px 8px;font-size:13px;font-family:inherit;"></td>' +
+      '<td class="cell-right"><input type="text" placeholder="0"' + amountVal + ' style="width:120px;text-align:right;border:1px solid #dcdfe3;border-radius:4px;padding:6px 8px;font-size:13px;font-family:inherit;"></td>' +
+      '<td class="cell-action"><button type="button" class="row-delete-btn form-edit-control" title="刪除此列" onclick="this.closest(\'tr\').remove()">&times;</button></td>';
     tbody.appendChild(tr);
   }
 
