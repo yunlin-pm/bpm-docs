@@ -1039,6 +1039,47 @@
     display: block;
     margin-top: 10px;
   }
+  .invoice-input-row {
+    display: flex;
+    gap: 8px;
+    max-width: 380px;
+    margin-bottom: 10px;
+  }
+  .invoice-input-row input[type="text"] {
+    flex: 1;
+    border: 1px solid #dcdfe3;
+    border-radius: 4px;
+    padding: 7px 10px;
+    font-size: 13px;
+    font-family: inherit;
+    color: var(--text-dark);
+  }
+  .invoice-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .invoice-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #eef2f7;
+    border-radius: 4px;
+    padding: 5px 8px 5px 12px;
+    font-size: 13px;
+    color: var(--text-dark);
+  }
+  .invoice-remove {
+    background: none;
+    border: none;
+    color: var(--text-gray);
+    font-size: 15px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 2px;
+  }
+  .invoice-remove:hover { color: #e2483d; }
   .radio-group {
     display: flex;
     gap: 18px;
@@ -1534,18 +1575,25 @@
             <label>支出科目</label>
             <select>
               <option value="">全部</option>
-              <option>租金支出</option>
               <option>文具用品</option>
-              <option>郵資</option>
-              <option>郵電費</option>
-              <option>旅費</option>
-              <option>修繕費</option>
-              <option>廣告費</option>
-              <option>保險費</option>
-              <option>交際費</option>
-              <option>職工福利</option>
+              <option>水電費</option>
               <option>交通費</option>
-              <option>雜項費用</option>
+              <option>交際費</option>
+              <option>保險費</option>
+              <option>修繕費</option>
+              <option>旅費 (不含海外出差)</option>
+              <option>書報雜誌</option>
+              <option>租金支出</option>
+              <option>訓練費</option>
+              <option>勞務費(委任顧問)</option>
+              <option>郵電費</option>
+              <option>運費</option>
+              <option>廣告費</option>
+              <option>薪資/獎金類</option>
+              <option>職工福利</option>
+              <option>代付款 (BBN)</option>
+              <option>雜項購置</option>
+              <option>其他費用</option>
             </select>
           </div>
           <div class="form-field">
@@ -1859,18 +1907,25 @@
               <label><span class="req">*</span>支出科目</label>
               <select>
                 <option value="">請選擇支出科目</option>
-                <option>租金支出</option>
                 <option>文具用品</option>
-                <option>郵資</option>
-                <option>郵電費</option>
-                <option>旅費</option>
-                <option>修繕費</option>
-                <option>廣告費</option>
-                <option>保險費</option>
-                <option>交際費</option>
-                <option>職工福利</option>
+                <option>水電費</option>
                 <option>交通費</option>
-                <option>雜項費用</option>
+                <option>交際費</option>
+                <option>保險費</option>
+                <option>修繕費</option>
+                <option>旅費 (不含海外出差)</option>
+                <option>書報雜誌</option>
+                <option>租金支出</option>
+                <option>訓練費</option>
+                <option>勞務費(委任顧問)</option>
+                <option>郵電費</option>
+                <option>運費</option>
+                <option>廣告費</option>
+                <option>薪資/獎金類</option>
+                <option>職工福利</option>
+                <option>代付款 (BBN)</option>
+                <option>雜項購置</option>
+                <option>其他費用</option>
               </select>
             </div>
             <div class="form-field">
@@ -1898,17 +1953,83 @@
             <div class="form-field">
               <label><span class="req">*</span>付款對象</label>
               <div class="radio-group">
-                <label><input type="radio" name="payeeType" id="payeeVendor" onchange="updateRemitPlaceholder()"> 廠商</label>
-                <label><input type="radio" name="payeeType" id="payeePersonal" checked onchange="updateRemitPlaceholder()"> 個人</label>
+                <label><input type="radio" name="payeeType" id="payeeCompany" checked onchange="updatePayeeFields()"> 公司行號或個人帳戶</label>
+                <label><input type="radio" name="payeeType" id="payeeSalary" onchange="updatePayeeFields()"> 員工薪資帳戶</label>
               </div>
             </div>
-            <div class="form-field">
-              <label><span class="req">*</span>匯款戶名</label>
-              <input type="text" id="remitName" placeholder="可輸入員工姓名或員編關鍵字查詢">
+            <div class="form-field" id="remitAccountField">
+              <label><span class="req">*</span>匯款帳號</label>
+              <input type="text" id="remitAccount" inputmode="numeric" placeholder="請輸入匯款帳號(純數字)" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
             </div>
-            <div class="form-field" id="remitHintField" style="display:none;">
-              <label></label>
-              <span class="field-hint">第一次匯款給廠商,送件時請附上「匯款帳號存摺封面」。</span>
+            <div class="form-field" id="remitNameTextField">
+              <label><span class="req">*</span>匯款戶名</label>
+              <input type="text" id="remitNameText" placeholder="請輸入匯款戶名">
+            </div>
+            <div class="form-field" id="remitNameSelectField" style="display:none;">
+              <label><span class="req">*</span>匯款戶名</label>
+              <select id="remitNameSelect">
+                <option value="">請選擇員工</option>
+                <option>王曉明(A123)</option>
+                <option>陳小華(A156)</option>
+                <option>王課長(A045)</option>
+                <option>王部長(A012)</option>
+                <option>李副總(A005)</option>
+              </select>
+            </div>
+            <div class="form-field" id="bankNameField">
+              <label><span class="req">*</span>銀行名稱/代碼</label>
+              <select id="bankName">
+                <option value="">請選擇銀行</option>
+                <option>004 台灣銀行</option>
+                <option>005 土地銀行</option>
+                <option>006 合作金庫商業銀行</option>
+                <option>007 第一商業銀行</option>
+                <option>008 華南商業銀行</option>
+                <option>009 彰化商業銀行</option>
+                <option>012 台北富邦商業銀行</option>
+                <option>013 國泰世華商業銀行</option>
+                <option>017 兆豐國際商業銀行</option>
+                <option>050 台灣中小企業銀行</option>
+                <option>700 中華郵政</option>
+                <option>803 聯邦商業銀行</option>
+                <option>805 遠東國際商業銀行</option>
+                <option>806 元大商業銀行</option>
+                <option>807 永豐商業銀行</option>
+                <option>808 玉山商業銀行</option>
+                <option>809 凱基商業銀行</option>
+                <option>812 台新國際商業銀行</option>
+                <option>822 中國信託商業銀行</option>
+              </select>
+            </div>
+            <div class="form-field" id="branchNameField">
+              <label><span class="req">*</span>分行名稱</label>
+              <select id="branchName">
+                <option value="">請選擇分行</option>
+                <option>營業部</option>
+                <option>城東分行</option>
+                <option>城中分行</option>
+                <option>信義分行</option>
+                <option>南京東路分行</option>
+                <option>大安分行</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label><span class="req">*</span>手續費負擔方式</label>
+              <div class="radio-group">
+                <label><input type="radio" name="feeBearer" id="feeBearerCompany" checked> 公司負擔</label>
+                <label><input type="radio" name="feeBearer" id="feeBearerPayee"> 付款對象負擔</label>
+              </div>
+            </div>
+            <div class="form-field form-field-top">
+              <label>發票號碼</label>
+              <div class="attachment-block">
+                <div class="invoice-input-row">
+                  <input type="text" id="invoiceInput" placeholder="請輸入發票號碼" onkeydown="if(event.key==='Enter'){event.preventDefault();addInvoiceNumber();}">
+                  <button type="button" class="btn btn-outline btn-sm" onclick="addInvoiceNumber()">＋ 新增</button>
+                </div>
+                <div class="invoice-list" id="invoiceList"></div>
+                <span class="field-hint">請款金額 5,000 元以上,需要填寫發票號碼(如為收據可免填)。</span>
+              </div>
             </div>
             <div class="form-field form-field-top">
               <label>表單附件</label>
@@ -1922,7 +2043,7 @@
                 </div>
                 <input type="file" id="attachmentInput" multiple style="display:none;" onchange="handleAttachmentUpload(this)">
                 <button type="button" class="attachment-upload-btn" onclick="document.getElementById('attachmentInput').click()">&#128206; 選擇上傳附件</button>
-                <span class="field-hint">如有需與「主管簽核單據」一併審閱之資料,可於此處檢附。</span>
+                <span class="field-hint">※ 如有需於簽核時一併審閱之資料,請於此處檢附。<br>※ 單據請確認載有公司全銜、統一編號,並加蓋對方之統一發票專用章或免用統一發票專用章。</span>
               </div>
             </div>
           </div>
@@ -2255,12 +2376,31 @@
     tbody.appendChild(tr);
   }
 
-  function updateRemitPlaceholder() {
-    var vendor = document.getElementById('payeeVendor').checked;
-    var input = document.getElementById('remitName');
-    input.placeholder = vendor ? '請自行輸入廠商匯款戶名' : '可輸入員工姓名或員編關鍵字查詢';
+  function updatePayeeFields() {
+    var company = document.getElementById('payeeCompany').checked;
+    document.getElementById('remitAccountField').style.display = company ? 'flex' : 'none';
+    document.getElementById('remitNameTextField').style.display = company ? 'flex' : 'none';
+    document.getElementById('bankNameField').style.display = company ? 'flex' : 'none';
+    document.getElementById('branchNameField').style.display = company ? 'flex' : 'none';
+    document.getElementById('remitNameSelectField').style.display = company ? 'none' : 'flex';
+    document.getElementById('remitAccount').value = '';
+    document.getElementById('remitNameText').value = '';
+    document.getElementById('bankName').value = '';
+    document.getElementById('branchName').value = '';
+    document.getElementById('remitNameSelect').value = '';
+  }
+
+  function addInvoiceNumber() {
+    var input = document.getElementById('invoiceInput');
+    var val = input.value.trim();
+    if (!val) return;
+    var list = document.getElementById('invoiceList');
+    var item = document.createElement('span');
+    item.className = 'invoice-item';
+    item.innerHTML = val + ' <button type="button" class="invoice-remove" title="刪除" onclick="this.closest(\'.invoice-item\').remove()">&times;</button>';
+    list.appendChild(item);
     input.value = '';
-    document.getElementById('remitHintField').style.display = vendor ? 'flex' : 'none';
+    input.focus();
   }
 
   function handleAttachmentUpload(input) {
