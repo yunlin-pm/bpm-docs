@@ -71,7 +71,7 @@
     align-items: center;
     gap: 14px;
   }
-  .finance-menu, .eng-menu {
+  .finance-menu, .eng-menu, .delegate-menu {
     position: relative;
     display: flex;
     align-items: center;
@@ -82,7 +82,7 @@
     font-size: 13px;
     cursor: default;
   }
-  .finance-menu-label, .eng-menu-label {
+  .finance-menu-label, .eng-menu-label, .delegate-menu-label {
     display: flex;
     align-items: center;
     gap: 5px;
@@ -92,11 +92,11 @@
     cursor: pointer;
     padding: 4px 2px;
   }
-  .finance-menu-label .caret-mini, .eng-menu-label .caret-mini {
+  .finance-menu-label .caret-mini, .eng-menu-label .caret-mini, .delegate-menu-label .caret-mini {
     font-size: 9px;
     color: rgba(255,255,255,0.7);
   }
-  .finance-dropdown, .eng-dropdown {
+  .finance-dropdown, .eng-dropdown, .delegate-dropdown {
     position: absolute;
     top: 38px;
     left: -2px;
@@ -110,20 +110,42 @@
     visibility: hidden;
     transition: opacity 0.15s ease, visibility 0s linear 0.3s;
   }
-  .finance-menu:hover .finance-dropdown, .eng-menu:hover .eng-dropdown {
+  .finance-menu:hover .finance-dropdown, .eng-menu:hover .eng-dropdown, .delegate-menu:hover .delegate-dropdown {
     opacity: 1;
     visibility: visible;
     transition-delay: 0s;
   }
-  .topbar-plain-link {
-    color: #fff;
+  .submenu-collapsed {
+    display: none;
+  }
+  .submenu-collapsed-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
     font-size: 13px;
-    font-weight: 400;
+    color: #fff;
     cursor: pointer;
     padding: 4px 2px;
   }
-  .topbar-plain-link:hover {
-    text-decoration: underline;
+  .submenu-collapsed-btn .caret {
+    font-size: 9px;
+    color: rgba(255,255,255,0.7);
+  }
+  .submenu-collapsed-icon {
+    font-size: 14px;
+    line-height: 1;
+  }
+  .dropdown.submenu-collapsed-dropdown {
+    top: 38px;
+    width: 230px;
+  }
+  .dropdown-group-label {
+    padding: 10px 18px 4px;
+    font-size: 11px;
+    color: #9aa0a8;
+    background: #fff;
   }
   .topbar-btn {
     background: #35b46a;
@@ -212,35 +234,11 @@
     width: 150px;
   }
 
-  /* ===== Topbar company selector (公司：xxx) ===== */
   .topbar-right {
     display: flex;
     align-items: center;
     gap: 20px;
   }
-  .company-btn {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: none;
-    border: none;
-    font-size: 13px;
-    color: #fff;
-    cursor: pointer;
-    padding: 4px 2px;
-  }
-  .company-btn .caret {
-    font-size: 9px;
-    color: rgba(255,255,255,0.7);
-  }
-  .company-value {
-    font-size: 13px;
-  }
-  .company-dropdown {
-    top: 38px;
-    width: 230px;
-  }
-
   /* ===== Header with logo ===== */
   .header {
     background: #fff;
@@ -296,6 +294,64 @@
   .crumb-static {
     color: var(--text-gray);
     cursor: default;
+  }
+
+  /* ===== Topbar / Header RWD ===== */
+  @media (max-width: 900px) {
+    .topbar {
+      flex-wrap: wrap;
+      row-gap: 8px;
+    }
+    .topbar-left {
+      flex-wrap: wrap;
+      row-gap: 8px;
+    }
+    .topbar-right {
+      margin-left: auto;
+    }
+    .header {
+      padding: 14px 20px;
+      flex-wrap: wrap;
+      row-gap: 10px;
+    }
+    .breadcrumb-bar {
+      padding: 10px 20px;
+    }
+  }
+  @media (max-width: 640px) {
+    .topbar {
+      padding: 10px 14px;
+    }
+    .app-label {
+      font-size: 15px;
+    }
+    .header {
+      padding: 12px 16px;
+    }
+    .header-logo .brand-text {
+      font-size: 17px;
+    }
+    .header-logo img {
+      height: 32px;
+    }
+    .topbar-right {
+      gap: 12px;
+    }
+    .profile-btn {
+      font-size: 12px;
+    }
+    .breadcrumb-bar {
+      padding: 8px 16px;
+    }
+    .submenu-tag,
+    .finance-menu,
+    .eng-menu,
+    .delegate-menu {
+      display: none;
+    }
+    .submenu-collapsed {
+      display: block;
+    }
   }
 
   /* ===== Main content ===== */
@@ -650,11 +706,19 @@
   .filter-grid .form-field label {
     width: 80px;
   }
+  .filter-grid .form-field {
+    min-width: 0;
+  }
+  .filter-grid .form-field select,
+  .filter-grid .form-field input {
+    min-width: 0;
+  }
   .date-range {
     display: flex;
     align-items: center;
     gap: 8px;
     flex: 1;
+    min-width: 0;
   }
   .date-range input {
     flex: 1;
@@ -846,6 +910,62 @@
     gap: 0;
     margin-bottom: 24px;
   }
+  .form-grid-2col {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 1100px;
+    column-gap: 40px;
+  }
+  .form-field-full {
+    grid-column: 1 / -1;
+  }
+  .form-subsection-heading {
+    grid-column: 1 / -1;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-dark);
+    border-bottom: 1px solid #eceef1;
+    padding-bottom: 10px;
+    margin: 24px 0 20px;
+  }
+  .form-subsection-heading:first-child {
+    margin-top: 0;
+  }
+  .remit-detail-box {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 40px;
+    background: #f5f6f8;
+    border-radius: 6px;
+    padding: 14px 20px 6px;
+    margin: 4px 0 8px;
+  }
+  @media (max-width: 1100px) {
+    .filter-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 900px) {
+    .form-grid-2col,
+    .remit-detail-box {
+      grid-template-columns: 1fr;
+    }
+    .form-field {
+      flex-wrap: wrap;
+    }
+  }
+  @media (max-width: 640px) {
+    .filter-grid {
+      grid-template-columns: 1fr;
+    }
+    .filter-grid .form-field label {
+      width: auto;
+      min-width: 80px;
+    }
+    .filter-actions {
+      flex-wrap: wrap;
+    }
+  }
   .form-field {
     display: flex;
     align-items: center;
@@ -857,6 +977,10 @@
     flex-shrink: 0;
     font-size: 13px;
     color: var(--text-dark);
+  }
+  #page-delegate-settings-detail .form-field label,
+  #page-my-delegate-detail .form-field label {
+    width: 132px;
   }
   .form-field label .req {
     color: #e2483d;
@@ -1136,6 +1260,10 @@
     color: #e2483d;
     font-size: 12px;
     margin-top: 6px;
+  }
+  .field-error {
+    color: #e2483d;
+    font-size: 12px;
   }
   .modal-footer {
     display: flex;
@@ -1541,20 +1669,32 @@
             <button class="dropdown-item" onclick="goToPage('eng-form')">個人AI工具申購表單管理</button>
           </div>
         </div>
-        <span class="topbar-plain-link" onclick="goToPage('all-signed-forms')">全部表單紀錄</span>
+        <div class="delegate-menu">
+          <span class="delegate-menu-label">代理人設定 <span class="caret-mini">&#9662;</span></span>
+          <div class="delegate-dropdown">
+            <button class="dropdown-item" onclick="goToPage('my-delegate')">我的代理人</button>
+            <button class="dropdown-item" onclick="goToPage('delegate-settings')">人員代理設定</button>
+          </div>
+        </div>
+        <div class="menu-wrap submenu-collapsed">
+          <button class="submenu-collapsed-btn" id="submenuCollapsedToggle" onclick="toggleDropdown('submenuCollapsedDropdown')">
+            <span class="submenu-collapsed-icon">&#9776;</span> 選單 <span class="caret">▼</span>
+          </button>
+          <div class="dropdown align-right submenu-collapsed-dropdown" id="submenuCollapsedDropdown">
+            <div class="dropdown-group-label">行政相關表單</div>
+            <button class="dropdown-item" onclick="goToPage('admin-form-list')">請購單管理</button>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-group-label">工程相關表單</div>
+            <button class="dropdown-item" onclick="goToPage('eng-form')">個人AI工具申購表單管理</button>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-group-label">代理人設定</div>
+            <button class="dropdown-item" onclick="goToPage('my-delegate')">我的代理人</button>
+            <button class="dropdown-item" onclick="goToPage('delegate-settings')">人員代理設定</button>
+          </div>
+        </div>
       </div>
     </div>
     <div class="topbar-right">
-      <div class="menu-wrap">
-        <button class="company-btn" id="companyToggle" onclick="toggleDropdown('companyDropdown')">
-          公司：<span id="companyLabel" class="company-value">網家跨境服務股份有限公司</span> <span class="caret">▼</span>
-        </button>
-        <div class="dropdown align-right company-dropdown" id="companyDropdown">
-          <button class="dropdown-item" onclick="selectCompany('比比昂株式會社')">比比昂株式會社</button>
-          <button class="dropdown-item" onclick="selectCompany('網家跨境服務股份有限公司')">網家跨境服務股份有限公司</button>
-          <button class="dropdown-item" onclick="selectCompany('空中補給股份有限公司')">空中補給股份有限公司</button>
-        </div>
-      </div>
       <div class="menu-wrap">
         <button class="profile-btn" id="profileToggle" onclick="toggleDropdown('profileDropdown')">
           Hi 王曉明 (A123) <span class="caret">▼</span>
@@ -1951,10 +2091,8 @@
       <div class="form-card">
         <div class="form-doc-title" id="formDocTitle">新增請購單</div>
 
-        <div class="form-section-heading">申請資訊</div>
-
-        <div class="form-grid">
-          <div>
+        <div class="form-grid form-grid-2col">
+            <div class="form-subsection-heading">基本資訊</div>
             <div class="form-field">
               <label><span class="req">*</span>申請人</label>
               <span class="static-text" id="applicantNameText">王曉明 (A123)</span>
@@ -2006,6 +2144,8 @@
                 <option>匯款</option>
               </select>
             </div>
+
+            <div class="form-subsection-heading">付款資訊</div>
             <div class="form-field" id="paymentTermsField" style="display:none;">
               <label><span class="req">*</span>付款條件</label>
               <select id="paymentTerms" onchange="updatePaymentTermsFields()">
@@ -2020,23 +2160,25 @@
               <label><span class="req">*</span>指定匯款日</label>
               <input type="date" id="specifiedDate">
             </div>
-            <div class="form-field">
-              <label><span class="req">*</span>付款對象</label>
+            <div class="form-field form-field-full">
+              <label><span class="req">*</span>匯款帳戶類型</label>
               <div class="radio-group">
                 <label><input type="radio" name="payeeType" id="payeeCompany" checked onchange="updatePayeeFields()"> 公司行號或個人帳戶</label>
                 <label><input type="radio" name="payeeType" id="payeeSalary" onchange="updatePayeeFields()"> 員工薪資帳戶</label>
               </div>
             </div>
-            <div class="form-field" id="remitAccountField">
-              <label><span class="req">*</span>匯款帳號</label>
-              <input type="text" id="remitAccount" inputmode="numeric" placeholder="請輸入匯款帳號(純數字)" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+            <div class="form-field form-field-full" id="remitPayeeSelectField">
+              <label><span class="req">*</span>選擇匯款對象</label>
+              <select id="remitPayeeSelect" onchange="updateRemitPayeeFields()">
+                <option value="">請選擇匯款對象</option>
+                <option value="誠品股份有限公司">誠品股份有限公司</option>
+                <option value="中華電信股份有限公司">中華電信股份有限公司</option>
+                <option value="__new__">＋ 新增匯款對象</option>
+              </select>
+              <span class="field-hint" id="remitPayeeHint" style="display:none;">以上資料取自「匯款資料維護」,如需修改請至該處調整。</span>
             </div>
-            <div class="form-field" id="remitNameTextField">
-              <label><span class="req">*</span>匯款戶名</label>
-              <input type="text" id="remitNameText" placeholder="請輸入匯款戶名">
-            </div>
-            <div class="form-field" id="remitNameSelectField" style="display:none;">
-              <label><span class="req">*</span>匯款戶名</label>
+            <div class="form-field form-field-full" id="remitNameSelectField" style="display:none;">
+              <label><span class="req">*</span>選擇匯款對象</label>
               <select id="remitNameSelect">
                 <option value="">請選擇員工</option>
                 <option>王曉明(A123)</option>
@@ -2046,51 +2188,81 @@
                 <option>李副總(A005)</option>
               </select>
             </div>
-            <div class="form-field" id="bankNameField">
-              <label><span class="req">*</span>銀行名稱/代碼</label>
-              <select id="bankName">
-                <option value="">請選擇銀行</option>
-                <option>004 台灣銀行</option>
-                <option>005 土地銀行</option>
-                <option>006 合作金庫商業銀行</option>
-                <option>007 第一商業銀行</option>
-                <option>008 華南商業銀行</option>
-                <option>009 彰化商業銀行</option>
-                <option>012 台北富邦商業銀行</option>
-                <option>013 國泰世華商業銀行</option>
-                <option>017 兆豐國際商業銀行</option>
-                <option>050 台灣中小企業銀行</option>
-                <option>700 中華郵政</option>
-                <option>803 聯邦商業銀行</option>
-                <option>805 遠東國際商業銀行</option>
-                <option>806 元大商業銀行</option>
-                <option>807 永豐商業銀行</option>
-                <option>808 玉山商業銀行</option>
-                <option>809 凱基商業銀行</option>
-                <option>812 台新國際商業銀行</option>
-                <option>822 中國信託商業銀行</option>
-              </select>
+            <div class="form-field-full remit-detail-box" id="remitDetailBox" style="display:none;">
+              <div class="form-field" id="remitAccountField">
+                <label><span class="req">*</span>匯款帳號</label>
+                <input type="text" id="remitAccount" inputmode="numeric" placeholder="請輸入匯款帳號(純數字)" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+              </div>
+              <div class="form-field" id="remitNameTextField">
+                <label><span class="req">*</span>匯款戶名</label>
+                <input type="text" id="remitNameText" placeholder="請輸入匯款戶名">
+              </div>
+              <div class="form-field" id="bankNameField">
+                <label><span class="req">*</span>銀行名稱/代碼</label>
+                <select id="bankName">
+                  <option value="">請選擇銀行</option>
+                  <option>004 台灣銀行</option>
+                  <option>005 土地銀行</option>
+                  <option>006 合作金庫商業銀行</option>
+                  <option>007 第一商業銀行</option>
+                  <option>008 華南商業銀行</option>
+                  <option>009 彰化商業銀行</option>
+                  <option>012 台北富邦商業銀行</option>
+                  <option>013 國泰世華商業銀行</option>
+                  <option>017 兆豐國際商業銀行</option>
+                  <option>050 台灣中小企業銀行</option>
+                  <option>700 中華郵政</option>
+                  <option>803 聯邦商業銀行</option>
+                  <option>805 遠東國際商業銀行</option>
+                  <option>806 元大商業銀行</option>
+                  <option>807 永豐商業銀行</option>
+                  <option>808 玉山商業銀行</option>
+                  <option>809 凱基商業銀行</option>
+                  <option>812 台新國際商業銀行</option>
+                  <option>822 中國信託商業銀行</option>
+                </select>
+              </div>
+              <div class="form-field" id="branchNameField">
+                <label><span class="req">*</span>分行名稱</label>
+                <select id="branchName">
+                  <option value="">請選擇分行</option>
+                  <option>營業部</option>
+                  <option>城東分行</option>
+                  <option>城中分行</option>
+                  <option>信義分行</option>
+                  <option>南京東路分行</option>
+                  <option>大安分行</option>
+                </select>
+              </div>
             </div>
-            <div class="form-field" id="branchNameField">
-              <label><span class="req">*</span>分行名稱</label>
-              <select id="branchName">
-                <option value="">請選擇分行</option>
-                <option>營業部</option>
-                <option>城東分行</option>
-                <option>城中分行</option>
-                <option>信義分行</option>
-                <option>南京東路分行</option>
-                <option>大安分行</option>
-              </select>
-            </div>
-            <div class="form-field">
+            <div class="form-field form-field-full">
               <label><span class="req">*</span>手續費負擔方式</label>
               <div class="radio-group">
                 <label><input type="radio" name="feeBearer" id="feeBearerCompany" checked> 公司負擔</label>
                 <label><input type="radio" name="feeBearer" id="feeBearerPayee"> 付款對象負擔</label>
               </div>
             </div>
-            <div class="form-field form-field-top">
+
+            <div class="form-subsection-heading">請款明細</div>
+            <table class="detail-table form-field-full">
+              <thead>
+                <tr>
+                  <th>摘要</th>
+                  <th class="cell-right">金額(含稅)</th>
+                  <th class="cell-action"></th>
+                </tr>
+              </thead>
+              <tbody id="detailRows"></tbody>
+            </table>
+            <span class="add-row-link form-edit-control form-field-full" onclick="addDetailRow()">+ 加入資料行</span>
+
+            <div class="form-total form-field-full">
+              <span>請款金額(含稅):</span>
+              <span class="amount" id="formTotalAmount">NT$ 0</span>
+            </div>
+
+            <div class="form-subsection-heading">憑證與附件</div>
+            <div class="form-field form-field-full form-field-top">
               <label>發票號碼</label>
               <div class="attachment-block">
                 <div class="invoice-input-row form-edit-control">
@@ -2101,7 +2273,7 @@
                 <span class="field-hint">請款金額 5,000 元以上,需要填寫發票號碼(如為收據可免填)。</span>
               </div>
             </div>
-            <div class="form-field form-field-top">
+            <div class="form-field form-field-full form-field-top">
               <label>表單附件</label>
               <div class="attachment-block">
                 <div class="attachment-list" id="attachmentList">
@@ -2116,27 +2288,6 @@
                 <span class="field-hint">※ 如有需於簽核時一併審閱之資料,請於此處檢附。<br>※ 單據請確認載有公司全銜、統一編號,並加蓋對方之統一發票專用章或免用統一發票專用章。</span>
               </div>
             </div>
-          </div>
-        </div>
-
-        <div class="detail-tabs">
-          <span class="detail-tab active">請款明細</span>
-        </div>
-        <table class="detail-table">
-          <thead>
-            <tr>
-              <th>摘要</th>
-              <th class="cell-right">金額(含稅)</th>
-              <th class="cell-action"></th>
-            </tr>
-          </thead>
-          <tbody id="detailRows"></tbody>
-        </table>
-        <span class="add-row-link form-edit-control" onclick="addDetailRow()">+ 加入資料行</span>
-
-        <div class="form-total">
-          <span>請款金額(含稅):</span>
-          <span class="amount" id="formTotalAmount">NT$ 0</span>
         </div>
 
       </div>
@@ -2264,7 +2415,7 @@
               <td>RM-0002</td>
               <td><span class="status-badge status-approved">使用中</span></td>
               <td><button class="btn btn-outline btn-sm action-btn" onclick="goToPage('remit-detail', 'edit')">編輯</button></td>
-              <td>王小明(A101)</td>
+              <td>王曉明(A123)</td>
               <td>員工薪資帳戶</td>
               <td></td>
             </tr>
@@ -2291,6 +2442,30 @@
               <td>中華電信股份有限公司</td>
               <td>公司行號或個人帳戶</td>
               <td class="truncate-cell" title="電信費">電信費</td>
+            </tr>
+            <tr>
+              <td>RM-0006</td>
+              <td><span class="status-badge status-approved">使用中</span></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="goToPage('remit-detail', 'edit')">編輯</button></td>
+              <td>陳小華(A156)</td>
+              <td>員工薪資帳戶</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>RM-0007</td>
+              <td><span class="status-badge status-approved">使用中</span></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="goToPage('remit-detail', 'edit')">編輯</button></td>
+              <td>王部長(A012)</td>
+              <td>員工薪資帳戶</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>RM-0008</td>
+              <td><span class="status-badge status-approved">使用中</span></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="goToPage('remit-detail', 'edit')">編輯</button></td>
+              <td>李副總(A005)</td>
+              <td>員工薪資帳戶</td>
+              <td></td>
             </tr>
           </tbody>
         </table>
@@ -2411,6 +2586,332 @@
         <span class="search-box">&#128269; 搜尋...</span>
       </div>
       <div class="placeholder-note">全部表單紀錄頁面內容製作中,之後將依畫面截圖補上</div>
+    </div>
+
+    <!-- 我的代理人 -->
+    <div class="page" id="page-my-delegate">
+      <div class="list-title-row">
+        <h2 class="section-title">我的代理人</h2>
+        <button class="btn btn-primary" onclick="goToPage('my-delegate-detail', 'new')">+ 新增</button>
+      </div>
+      <div class="advanced-filter-panel" id="myDelegateFilterPanel">
+        <div class="filter-grid">
+          <div class="form-field">
+            <label>狀態</label>
+            <select>
+              <option value="">全部</option>
+              <option>有效</option>
+              <option>取消</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>原簽核者所屬公司</label>
+            <select>
+              <option value="">全部</option>
+              <option>比比昂株式會社</option>
+              <option>網家跨境服務股份有限公司</option>
+              <option>空中補給股份有限公司</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>代理簽核期間</label>
+            <div class="date-range">
+              <input type="text" placeholder="YYYYMMDD" maxlength="8">
+              <span>~</span>
+              <input type="text" placeholder="YYYYMMDD" maxlength="8">
+            </div>
+          </div>
+        </div>
+        <div class="filter-actions">
+          <button class="btn btn-outline btn-sm">清除</button>
+          <button class="btn btn-primary btn-sm">查詢</button>
+        </div>
+      </div>
+
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>狀態</th>
+              <th style="width:70px;">編輯</th>
+              <th>原簽核者所屬公司</th>
+              <th>原簽核者</th>
+              <th>代理簽核者</th>
+              <th>代理簽核期間</th>
+              <th style="width:70px;">取消/刪除</th>
+              <th>最後異動人員</th>
+              <th>最後異動時間</th>
+              <th>新增人員</th>
+              <th>新增時間</th>
+            </tr>
+          </thead>
+          <tbody id="my-delegate-rows">
+            <tr>
+              <td><span class="status-badge status-approved">有效</span></td>
+              <td><button class="btn btn-outline btn-sm action-btn delegate-edit-btn" data-page="my-delegate-detail" onclick="goToPage('my-delegate-detail', 'edit')">編輯</button></td>
+              <td>比比昂株式會社</td>
+              <td>王曉明(A123)</td>
+              <td>王課長(A045)</td>
+              <td>2026/01/01 ~ 2026/12/31</td>
+              <td class="delegate-action-cell" data-start="2026-01-01"></td>
+              <td>王曉明(A123)</td>
+              <td>2026-07-01 10:00</td>
+              <td>王曉明(A123)</td>
+              <td>2026-07-01 10:00</td>
+            </tr>
+            <tr>
+              <td><span class="status-badge status-approved">有效</span></td>
+              <td><button class="btn btn-outline btn-sm action-btn delegate-edit-btn" data-page="my-delegate-detail" onclick="goToPage('my-delegate-detail', 'edit')">編輯</button></td>
+              <td>網家跨境服務股份有限公司</td>
+              <td>王曉明(A123)</td>
+              <td>王部長(A012)</td>
+              <td>2026/12/01 ~ 2026/12/31</td>
+              <td class="delegate-action-cell" data-start="2026-12-01"></td>
+              <td>王曉明(A123)</td>
+              <td>2026-08-10 09:15</td>
+              <td>王曉明(A123)</td>
+              <td>2026-08-05 14:30</td>
+            </tr>
+            <tr>
+              <td><span class="status-badge status-approved">有效</span></td>
+              <td><button class="btn btn-outline btn-sm action-btn delegate-edit-btn" data-page="my-delegate-detail" onclick="goToPage('my-delegate-detail', 'edit')">編輯</button></td>
+              <td>空中補給股份有限公司</td>
+              <td>王曉明(A123)</td>
+              <td>張專員(A089)</td>
+              <td>2026/09/01 ~ 2026/09/30</td>
+              <td class="delegate-action-cell" data-start="2026-09-01"></td>
+              <td>王曉明(A123)</td>
+              <td>2026-08-12 11:00</td>
+              <td>王曉明(A123)</td>
+              <td>2026-08-12 11:00</td>
+            </tr>
+            <tr>
+              <td><span class="status-badge status-draft">取消</span></td>
+              <td><button class="btn btn-outline btn-sm action-btn delegate-edit-btn" data-page="my-delegate-detail" onclick="goToPage('my-delegate-detail', 'view')">查看</button></td>
+              <td>比比昂株式會社</td>
+              <td>王曉明(A123)</td>
+              <td>陳小華(A156)</td>
+              <td>2026/06/01 ~ 2026/06/30</td>
+              <td class="delegate-action-cell"></td>
+              <td>王曉明(A123)</td>
+              <td>2026-06-15 08:30</td>
+              <td>王曉明(A123)</td>
+              <td>2026-05-20 16:00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 新增／編輯我的代理人 -->
+    <div class="page" id="page-my-delegate-detail">
+      <div class="form-action-bar">
+        <div class="form-action-bar-left">
+          <button class="btn btn-outline" onclick="goToPage('my-delegate')">返回</button>
+          <button class="btn btn-primary" id="myDelegateSubmitBtn" onclick="submitMyDelegateForm()">確認送出</button>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <div class="form-doc-title" id="myDelegateDocTitle">新增我的代理人</div>
+
+        <div class="form-grid">
+          <div>
+            <div class="form-field">
+              <label><span class="req">*</span>原簽核者所屬公司</label>
+              <select id="myDelegateSignerCompany" onchange="updateMyDelegateProxyOptions()">
+                <option value="">請選擇公司</option>
+                <option>比比昂株式會社</option>
+                <option>網家跨境服務股份有限公司</option>
+                <option>空中補給股份有限公司</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label><span class="req">*</span>原簽核者</label>
+              <span class="static-text" id="myDelegateOriginalSigner">王曉明 (A123)</span>
+            </div>
+            <div class="form-field">
+              <label><span class="req">*</span>代理簽核者</label>
+              <select id="myDelegateProxy" disabled>
+                <option value="">請先選擇原簽核者所屬公司</option>
+              </select>
+              <span class="field-error" id="myDelegateProxyError" style="display:none;">代理簽核者不可與原簽核者相同,請重新選擇</span>
+            </div>
+            <div class="form-field">
+              <label><span class="req">*</span>代理簽核期間</label>
+              <div class="date-range">
+                <input type="text" id="myDelegateStartDate" placeholder="YYYYMMDD" maxlength="8">
+                <span>~</span>
+                <input type="text" id="myDelegateEndDate" placeholder="YYYYMMDD" maxlength="8">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 人員代理設定 -->
+    <div class="page" id="page-delegate-settings">
+      <div class="list-title-row">
+        <h2 class="section-title">人員代理設定</h2>
+        <button class="btn btn-primary" onclick="goToPage('delegate-settings-detail', 'new')">+ 新增</button>
+      </div>
+      <div class="advanced-filter-panel" id="delegateSettingsFilterPanel">
+        <div class="filter-grid">
+          <div class="form-field">
+            <label>狀態</label>
+            <select>
+              <option value="">全部</option>
+              <option>有效</option>
+              <option>取消</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>原簽核者所屬公司</label>
+            <select>
+              <option value="">全部</option>
+              <option>比比昂株式會社</option>
+              <option>網家跨境服務股份有限公司</option>
+              <option>空中補給股份有限公司</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>代理簽核期間</label>
+            <div class="date-range">
+              <input type="text" placeholder="YYYYMMDD" maxlength="8">
+              <span>~</span>
+              <input type="text" placeholder="YYYYMMDD" maxlength="8">
+            </div>
+          </div>
+        </div>
+        <div class="filter-actions">
+          <button class="btn btn-outline btn-sm">清除</button>
+          <button class="btn btn-primary btn-sm">查詢</button>
+        </div>
+      </div>
+
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>狀態</th>
+              <th style="width:70px;">編輯</th>
+              <th>原簽核者所屬公司</th>
+              <th>原簽核者</th>
+              <th>代理簽核者</th>
+              <th>代理簽核期間</th>
+              <th style="width:70px;">取消/刪除</th>
+              <th>最後異動人員</th>
+              <th>最後異動時間</th>
+              <th>新增人員</th>
+              <th>新增時間</th>
+            </tr>
+          </thead>
+          <tbody id="delegate-settings-rows">
+            <tr>
+              <td><span class="status-badge status-approved">有效</span></td>
+              <td><button class="btn btn-outline btn-sm action-btn delegate-edit-btn" data-page="delegate-settings-detail" onclick="goToPage('delegate-settings-detail', 'edit')">編輯</button></td>
+              <td>比比昂株式會社</td>
+              <td>王課長(A045)</td>
+              <td>陳小華(A156)</td>
+              <td>2026/07/01 ~ 2026/12/31</td>
+              <td class="delegate-action-cell" data-start="2026-07-01"></td>
+              <td>王曉明(A123)</td>
+              <td>2026-07-01 09:00</td>
+              <td>王曉明(A123)</td>
+              <td>2026-07-01 09:00</td>
+            </tr>
+            <tr>
+              <td><span class="status-badge status-approved">有效</span></td>
+              <td><button class="btn btn-outline btn-sm action-btn delegate-edit-btn" data-page="delegate-settings-detail" onclick="goToPage('delegate-settings-detail', 'edit')">編輯</button></td>
+              <td>網家跨境服務股份有限公司</td>
+              <td>李副總(A005)</td>
+              <td>王部長(A012)</td>
+              <td>2026/09/01 ~ 2026/09/30</td>
+              <td class="delegate-action-cell" data-start="2026-09-01"></td>
+              <td>王曉明(A123)</td>
+              <td>2026-08-15 14:20</td>
+              <td>王曉明(A123)</td>
+              <td>2026-08-15 14:20</td>
+            </tr>
+            <tr>
+              <td><span class="status-badge status-approved">有效</span></td>
+              <td><button class="btn btn-outline btn-sm action-btn delegate-edit-btn" data-page="delegate-settings-detail" onclick="goToPage('delegate-settings-detail', 'edit')">編輯</button></td>
+              <td>空中補給股份有限公司</td>
+              <td>林經理(A067)</td>
+              <td>張專員(A089)</td>
+              <td>2026/06/01 ~ 2026/12/31</td>
+              <td class="delegate-action-cell" data-start="2026-06-01"></td>
+              <td>王曉明(A123)</td>
+              <td>2026-06-01 10:30</td>
+              <td>王曉明(A123)</td>
+              <td>2026-06-01 10:30</td>
+            </tr>
+            <tr>
+              <td><span class="status-badge status-draft">取消</span></td>
+              <td><button class="btn btn-outline btn-sm action-btn delegate-edit-btn" data-page="delegate-settings-detail" onclick="goToPage('delegate-settings-detail', 'view')">查看</button></td>
+              <td>比比昂株式會社</td>
+              <td>王課長(A045)</td>
+              <td>王曉明(A123)</td>
+              <td>2026/05/01 ~ 2026/05/31</td>
+              <td class="delegate-action-cell"></td>
+              <td>王曉明(A123)</td>
+              <td>2026-05-10 16:45</td>
+              <td>王曉明(A123)</td>
+              <td>2026-04-25 11:00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 新增／編輯人員代理設定 -->
+    <div class="page" id="page-delegate-settings-detail">
+      <div class="form-action-bar">
+        <div class="form-action-bar-left">
+          <button class="btn btn-outline" onclick="goToPage('delegate-settings')">返回</button>
+          <button class="btn btn-primary" id="settingsSubmitBtn" onclick="submitDelegateSettingsForm()">確認送出</button>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <div class="form-doc-title" id="settingsDocTitle">新增人員代理設定</div>
+
+        <div class="form-grid">
+          <div>
+            <div class="form-field">
+              <label><span class="req">*</span>原簽核者所屬公司</label>
+              <select id="settingsSignerCompany" onchange="updateSettingsCompanyDependents()">
+                <option value="">請選擇公司</option>
+                <option>比比昂株式會社</option>
+                <option>網家跨境服務股份有限公司</option>
+                <option>空中補給股份有限公司</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label><span class="req">*</span>原簽核者</label>
+              <select id="settingsSigner" disabled>
+                <option value="">請先選擇原簽核者所屬公司</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label><span class="req">*</span>代理簽核者</label>
+              <select id="settingsProxy" disabled>
+                <option value="">請先選擇原簽核者所屬公司</option>
+              </select>
+              <span class="field-error" id="settingsProxyError" style="display:none;">代理簽核者不可與原簽核者相同,請重新選擇</span>
+            </div>
+            <div class="form-field">
+              <label><span class="req">*</span>代理簽核期間</label>
+              <div class="date-range">
+                <input type="text" id="settingsStartDate" placeholder="YYYYMMDD" maxlength="8">
+                <span>~</span>
+                <input type="text" id="settingsEndDate" placeholder="YYYYMMDD" maxlength="8">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- 個人資料維護 -->
@@ -2559,6 +3060,19 @@
     </div>
   </div>
 
+  <div class="modal-overlay" id="delegateConfirmOverlay" style="display:none;">
+    <div class="modal-box">
+      <div class="modal-title" id="delegateConfirmTitle">取消代理設定</div>
+      <div class="modal-body">
+        <div class="modal-desc" id="delegateConfirmDesc">確定要取消這筆代理人設定嗎?取消後仍會保留於列表中,但不再生效。</div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeDelegateConfirmModal()">返回</button>
+        <button class="btn btn-primary" id="delegateConfirmBtn" onclick="confirmDelegateAction()">確認取消</button>
+      </div>
+    </div>
+  </div>
+
 <script>
   function toggleDropdown(id) {
     var dd = document.getElementById(id);
@@ -2572,11 +3086,6 @@
       document.querySelectorAll('.dropdown.open').forEach(function(d) { d.classList.remove('open'); });
     }
   });
-
-  function selectCompany(name) {
-    document.getElementById('companyLabel').textContent = name;
-    document.querySelectorAll('.dropdown.open').forEach(function(d) { d.classList.remove('open'); });
-  }
 
   function selectLang(el) {
     document.getElementById('langSelectToggle').textContent = el.textContent.trim();
@@ -2614,6 +3123,7 @@
     var appLevel = '<span class="crumb-static">表單申請／簽核</span>';
     var financeLevel = '<span class="crumb-static">行政相關表單</span>';
     var engLevel = '<span class="crumb-static">工程相關表單</span>';
+    var delegateLevel = '<span class="crumb-static">代理人設定</span>';
     var appLabelEl = document.getElementById('topbarAppLabel');
     var submenuGroupEl = document.getElementById('topbarSubmenuGroup');
     if (id === 'overview' || id === 'profile') {
@@ -2645,6 +3155,22 @@
     } else if (id === 'all-signed-forms') {
       crumbBar.innerHTML = home + sep + appLevel + sep +
         '<span class="crumb-item active">全部表單紀錄</span>';
+    } else if (id === 'my-delegate') {
+      crumbBar.innerHTML = home + sep + appLevel + sep + delegateLevel + sep +
+        '<span class="crumb-item active">我的代理人</span>';
+    } else if (id === 'my-delegate-detail') {
+      var delegateCrumbText = (mode === 'edit') ? '編輯我的代理人' : (mode === 'view') ? '查看我的代理人' : '新增我的代理人';
+      crumbBar.innerHTML = home + sep + appLevel + sep + delegateLevel + sep +
+        '<span class="crumb-item" onclick="goToPage(\'my-delegate\')">我的代理人</span>' + sep +
+        '<span class="crumb-item active">' + delegateCrumbText + '</span>';
+    } else if (id === 'delegate-settings') {
+      crumbBar.innerHTML = home + sep + appLevel + sep + delegateLevel + sep +
+        '<span class="crumb-item active">人員代理設定</span>';
+    } else if (id === 'delegate-settings-detail') {
+      var settingsCrumbText = (mode === 'edit') ? '編輯人員代理設定' : (mode === 'view') ? '查看人員代理設定' : '新增人員代理設定';
+      crumbBar.innerHTML = home + sep + appLevel + sep + delegateLevel + sep +
+        '<span class="crumb-item" onclick="goToPage(\'delegate-settings\')">人員代理設定</span>' + sep +
+        '<span class="crumb-item active">' + settingsCrumbText + '</span>';
     } else if (id === 'remit-list') {
       crumbBar.innerHTML = home + sep + '<span class="crumb-item active">匯款資料管理</span>';
     } else if (id === 'remit-detail') {
@@ -2664,6 +3190,22 @@
 
     if (id === 'remit-detail') {
       setupRemitDetailMode(mode);
+    }
+
+    if (id === 'my-delegate') {
+      loadMyDelegateActions();
+    }
+
+    if (id === 'my-delegate-detail') {
+      setupMyDelegateDetailMode(mode);
+    }
+
+    if (id === 'delegate-settings') {
+      loadDelegateSettingsActions();
+    }
+
+    if (id === 'delegate-settings-detail') {
+      setupDelegateSettingsDetailMode(mode);
     }
 
     document.querySelectorAll('.dropdown.open').forEach(function(d) { d.classList.remove('open'); });
@@ -2719,6 +3261,8 @@
     updatePaymentTermsFields();
     document.getElementById('payeeCompany').checked = true;
     updatePayeeFields();
+    document.getElementById('remitPayeeSelect').value = '__new__';
+    document.getElementById('remitDetailBox').style.display = 'grid';
     document.getElementById('remitAccount').value = '1234567890123';
     document.getElementById('remitNameText').value = '王小明';
     document.getElementById('bankName').value = '822 中國信託商業銀行';
@@ -2785,6 +3329,240 @@
     document.getElementById('remitBankName').value = '';
     document.getElementById('remitBranchName').value = '';
     document.getElementById('remitNote').value = '';
+  }
+
+  function loadMyDelegateActions() {
+    var rows = document.querySelectorAll('#my-delegate-rows tr');
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+    rows.forEach(function(row) {
+      var cell = row.querySelector('.delegate-action-cell');
+      if (!cell) return;
+      var startStr = cell.getAttribute('data-start');
+      if (!startStr) {
+        cell.innerHTML = '';
+        return;
+      }
+      var start = new Date(startStr);
+      if (today >= start) {
+        cell.innerHTML = '<button class="btn btn-outline btn-sm action-btn" onclick="openDelegateActionModal(this, \'cancel\')">取消</button>';
+      } else {
+        cell.innerHTML = '<button class="btn btn-outline btn-sm action-btn" onclick="openDelegateActionModal(this, \'delete\')">刪除</button>';
+      }
+    });
+  }
+
+  var delegateActionTarget = null;
+  var delegateActionType = null;
+
+  function openDelegateActionModal(btn, type) {
+    delegateActionTarget = btn.closest('tr');
+    delegateActionType = type;
+    var title = document.getElementById('delegateConfirmTitle');
+    var desc = document.getElementById('delegateConfirmDesc');
+    var confirmBtn = document.getElementById('delegateConfirmBtn');
+    if (type === 'cancel') {
+      title.textContent = '取消代理設定';
+      desc.textContent = '確定要取消這筆代理人設定嗎?取消後仍會保留於列表中,但不再生效。';
+      confirmBtn.textContent = '確認取消';
+    } else {
+      title.textContent = '刪除代理設定';
+      desc.textContent = '確定要刪除這筆代理人設定嗎?刪除後將無法復原。';
+      confirmBtn.textContent = '確認刪除';
+    }
+    document.getElementById('delegateConfirmOverlay').style.display = 'flex';
+  }
+
+  function closeDelegateConfirmModal() {
+    document.getElementById('delegateConfirmOverlay').style.display = 'none';
+    delegateActionTarget = null;
+    delegateActionType = null;
+  }
+
+  function confirmDelegateAction() {
+    if (delegateActionTarget) {
+      if (delegateActionType === 'cancel') {
+        var statusBadge = delegateActionTarget.querySelector('.status-badge');
+        if (statusBadge) {
+          statusBadge.className = 'status-badge status-draft';
+          statusBadge.textContent = '取消';
+        }
+        var actionCell = delegateActionTarget.querySelector('.delegate-action-cell');
+        if (actionCell) {
+          actionCell.removeAttribute('data-start');
+          actionCell.innerHTML = '';
+        }
+        var editBtn = delegateActionTarget.querySelector('.delegate-edit-btn');
+        if (editBtn) {
+          var targetPage = editBtn.getAttribute('data-page');
+          editBtn.textContent = '查看';
+          editBtn.setAttribute('onclick', "goToPage('" + targetPage + "', 'view')");
+        }
+      } else if (delegateActionType === 'delete') {
+        delegateActionTarget.remove();
+      }
+    }
+    closeDelegateConfirmModal();
+  }
+
+  var DELEGATE_COMPANY_EMPLOYEES = {
+    '比比昂株式會社': ['王曉明(A123)', '王課長(A045)', '陳小華(A156)'],
+    '網家跨境服務股份有限公司': ['王部長(A012)', '李副總(A005)'],
+    '空中補給股份有限公司': ['林經理(A067)', '張專員(A089)']
+  };
+
+  function populateProxySelect(proxySelectId, company, placeholderText, selectedValue) {
+    var proxySelect = document.getElementById(proxySelectId);
+    if (!company) {
+      proxySelect.innerHTML = '<option value="">' + placeholderText + '</option>';
+      proxySelect.disabled = true;
+      return;
+    }
+    proxySelect.disabled = false;
+    var employees = DELEGATE_COMPANY_EMPLOYEES[company] || [];
+    var html = '<option value="">請選擇員工</option>';
+    employees.forEach(function(name) {
+      html += '<option>' + name + '</option>';
+    });
+    proxySelect.innerHTML = html;
+    if (selectedValue) { proxySelect.value = selectedValue; }
+  }
+
+  function updateProxySelectOptions(companySelectId, proxySelectId, placeholderText, selectedValue) {
+    var company = document.getElementById(companySelectId).value;
+    populateProxySelect(proxySelectId, company, placeholderText, selectedValue);
+  }
+
+  function updateMyDelegateProxyOptions(selectedProxy) {
+    updateProxySelectOptions('myDelegateSignerCompany', 'myDelegateProxy', '請先選擇原簽核者所屬公司', selectedProxy);
+  }
+
+  function setupMyDelegateDetailMode(mode) {
+    var isEdit = (mode === 'edit');
+    var isView = (mode === 'view');
+    document.getElementById('myDelegateDocTitle').textContent = isView ? '查看我的代理人' : (isEdit ? '編輯我的代理人' : '新增我的代理人');
+    document.getElementById('myDelegateProxyError').style.display = 'none';
+    if (isEdit || isView) {
+      loadMyDelegateSampleData();
+    } else {
+      resetMyDelegateForm();
+    }
+    document.getElementById('myDelegateSignerCompany').disabled = isView;
+    if (isView) { document.getElementById('myDelegateProxy').disabled = true; }
+    document.getElementById('myDelegateStartDate').disabled = isView;
+    document.getElementById('myDelegateEndDate').disabled = isView;
+    document.getElementById('myDelegateSubmitBtn').style.display = isView ? 'none' : '';
+  }
+
+  function loadMyDelegateSampleData() {
+    document.getElementById('myDelegateOriginalSigner').textContent = '王曉明 (A123)';
+    document.getElementById('myDelegateSignerCompany').value = '比比昂株式會社';
+    updateMyDelegateProxyOptions('王課長(A045)');
+    document.getElementById('myDelegateStartDate').value = '20260101';
+    document.getElementById('myDelegateEndDate').value = '20261231';
+  }
+
+  function resetMyDelegateForm() {
+    document.getElementById('myDelegateOriginalSigner').textContent = '王曉明 (A123)';
+    document.getElementById('myDelegateSignerCompany').value = '';
+    updateMyDelegateProxyOptions();
+    document.getElementById('myDelegateStartDate').value = '';
+    document.getElementById('myDelegateEndDate').value = '';
+  }
+
+  function submitMyDelegateForm() {
+    var original = document.getElementById('myDelegateOriginalSigner').textContent.replace(/\s/g, '');
+    var proxySelect = document.getElementById('myDelegateProxy');
+    var proxy = proxySelect.value.replace(/\s/g, '');
+    var errorEl = document.getElementById('myDelegateProxyError');
+    if (proxy && proxy === original) {
+      errorEl.style.display = '';
+      return;
+    }
+    errorEl.style.display = 'none';
+    goToPage('my-delegate');
+  }
+
+  function loadDelegateSettingsActions() {
+    var rows = document.querySelectorAll('#delegate-settings-rows tr');
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+    rows.forEach(function(row) {
+      var cell = row.querySelector('.delegate-action-cell');
+      if (!cell) return;
+      var startStr = cell.getAttribute('data-start');
+      if (!startStr) {
+        cell.innerHTML = '';
+        return;
+      }
+      var start = new Date(startStr);
+      if (today >= start) {
+        cell.innerHTML = '<button class="btn btn-outline btn-sm action-btn" onclick="openDelegateActionModal(this, \'cancel\')">取消</button>';
+      } else {
+        cell.innerHTML = '<button class="btn btn-outline btn-sm action-btn" onclick="openDelegateActionModal(this, \'delete\')">刪除</button>';
+      }
+    });
+  }
+
+  function updateSettingsSignerOptions(selectedSigner) {
+    updateProxySelectOptions('settingsSignerCompany', 'settingsSigner', '請先選擇原簽核者所屬公司', selectedSigner);
+  }
+
+  function updateSettingsProxyOptions(selectedProxy) {
+    updateProxySelectOptions('settingsSignerCompany', 'settingsProxy', '請先選擇原簽核者所屬公司', selectedProxy);
+  }
+
+  function updateSettingsCompanyDependents() {
+    updateSettingsSignerOptions();
+    updateSettingsProxyOptions();
+  }
+
+  function setupDelegateSettingsDetailMode(mode) {
+    var isEdit = (mode === 'edit');
+    var isView = (mode === 'view');
+    document.getElementById('settingsDocTitle').textContent = isView ? '查看人員代理設定' : (isEdit ? '編輯人員代理設定' : '新增人員代理設定');
+    document.getElementById('settingsProxyError').style.display = 'none';
+    if (isEdit || isView) {
+      loadDelegateSettingsSampleData();
+    } else {
+      resetDelegateSettingsForm();
+    }
+    document.getElementById('settingsSignerCompany').disabled = isView;
+    if (isView) {
+      document.getElementById('settingsSigner').disabled = true;
+      document.getElementById('settingsProxy').disabled = true;
+    }
+    document.getElementById('settingsStartDate').disabled = isView;
+    document.getElementById('settingsEndDate').disabled = isView;
+    document.getElementById('settingsSubmitBtn').style.display = isView ? 'none' : '';
+  }
+
+  function loadDelegateSettingsSampleData() {
+    document.getElementById('settingsSignerCompany').value = '比比昂株式會社';
+    updateSettingsSignerOptions('王課長(A045)');
+    updateSettingsProxyOptions('陳小華(A156)');
+    document.getElementById('settingsStartDate').value = '20260701';
+    document.getElementById('settingsEndDate').value = '20261231';
+  }
+
+  function resetDelegateSettingsForm() {
+    document.getElementById('settingsSignerCompany').value = '';
+    updateSettingsSignerOptions();
+    updateSettingsProxyOptions();
+    document.getElementById('settingsStartDate').value = '';
+    document.getElementById('settingsEndDate').value = '';
+  }
+
+  function submitDelegateSettingsForm() {
+    var signer = document.getElementById('settingsSigner').value.replace(/\s/g, '');
+    var proxy = document.getElementById('settingsProxy').value.replace(/\s/g, '');
+    var errorEl = document.getElementById('settingsProxyError');
+    if (proxy && signer && proxy === signer) {
+      errorEl.style.display = '';
+      return;
+    }
+    errorEl.style.display = 'none';
+    goToPage('delegate-settings');
   }
 
   function setApprovalPending() {
@@ -2879,18 +3657,44 @@
     tbody.appendChild(tr);
   }
 
+  var REMIT_COMPANY_DATA = {
+    '誠品股份有限公司': { account: '1234567890123', name: '誠品股份有限公司', bank: '822 中國信託商業銀行', branch: '城東分行' },
+    '中華電信股份有限公司': { account: '9876543210987', name: '中華電信股份有限公司', bank: '004 台灣銀行', branch: '營業部' }
+  };
+
   function updatePayeeFields() {
     var company = document.getElementById('payeeCompany').checked;
-    document.getElementById('remitAccountField').style.display = company ? 'flex' : 'none';
-    document.getElementById('remitNameTextField').style.display = company ? 'flex' : 'none';
-    document.getElementById('bankNameField').style.display = company ? 'flex' : 'none';
-    document.getElementById('branchNameField').style.display = company ? 'flex' : 'none';
+    document.getElementById('remitPayeeSelectField').style.display = company ? 'flex' : 'none';
     document.getElementById('remitNameSelectField').style.display = company ? 'none' : 'flex';
-    document.getElementById('remitAccount').value = '';
-    document.getElementById('remitNameText').value = '';
-    document.getElementById('bankName').value = '';
-    document.getElementById('branchName').value = '';
     document.getElementById('remitNameSelect').value = '';
+    document.getElementById('remitPayeeSelect').value = '';
+    updateRemitPayeeFields();
+  }
+
+  function updateRemitPayeeFields() {
+    var val = document.getElementById('remitPayeeSelect').value;
+    var box = document.getElementById('remitDetailBox');
+    if (!val) {
+      box.style.display = 'none';
+      document.getElementById('remitPayeeHint').style.display = 'none';
+      document.getElementById('remitAccount').value = '';
+      document.getElementById('remitNameText').value = '';
+      document.getElementById('bankName').value = '';
+      document.getElementById('branchName').value = '';
+      return;
+    }
+    box.style.display = 'grid';
+    var isNew = (val === '__new__');
+    var data = REMIT_COMPANY_DATA[val];
+    document.getElementById('remitAccount').value = isNew ? '' : (data ? data.account : '');
+    document.getElementById('remitNameText').value = isNew ? '' : (data ? data.name : '');
+    document.getElementById('bankName').value = isNew ? '' : (data ? data.bank : '');
+    document.getElementById('branchName').value = isNew ? '' : (data ? data.branch : '');
+    document.getElementById('remitAccount').disabled = !isNew;
+    document.getElementById('remitNameText').disabled = !isNew;
+    document.getElementById('bankName').disabled = !isNew;
+    document.getElementById('branchName').disabled = !isNew;
+    document.getElementById('remitPayeeHint').style.display = isNew ? 'none' : '';
   }
 
   function addInvoiceNumber() {
