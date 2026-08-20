@@ -407,6 +407,20 @@
     color: var(--text-gray);
     margin-top: 4px;
   }
+  .card.clickable {
+    cursor: pointer;
+    transition: box-shadow 0.15s, transform 0.15s;
+  }
+  .card.clickable:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    transform: translateY(-2px);
+  }
+  .overview-section + .overview-section {
+    margin-top: 32px;
+  }
+  .overview-section .section-title {
+    margin-bottom: 16px;
+  }
 
   /* ===== Filter / search bar (placeholder pages) ===== */
   .filter-bar {
@@ -712,6 +726,62 @@
   .filter-grid .form-field select,
   .filter-grid .form-field input {
     min-width: 0;
+  }
+  .filter-grid .form-field .multiselect-wrap {
+    min-width: 0;
+  }
+  .multiselect-wrap {
+    position: relative;
+    flex: 1;
+  }
+  .multiselect-trigger {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    border: 1px solid #dcdfe3;
+    border-radius: 4px;
+    padding: 7px 10px;
+    font-size: 13px;
+    font-family: inherit;
+    color: var(--text-dark);
+    background: #fff;
+    cursor: pointer;
+    text-align: left;
+  }
+  .multiselect-trigger-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .multiselect-trigger .caret {
+    font-size: 9px;
+    color: #9aa0a8;
+    flex-shrink: 0;
+  }
+  .dropdown.multiselect-dropdown {
+    width: 100%;
+    padding: 6px 0;
+  }
+  .multiselect-dropdown .dropdown-checkbox-row,
+  .filter-grid .form-field .multiselect-dropdown .dropdown-checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    width: auto;
+    font-size: 13px;
+    color: var(--text-dark);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .dropdown-checkbox-row:hover {
+    background: #eef0f2;
+  }
+  .dropdown-checkbox-row input {
+    margin: 0;
+    flex-shrink: 0;
   }
   .date-range {
     display: flex;
@@ -1722,27 +1792,42 @@
 
     <!-- 總覽 -->
     <div class="page active" id="page-overview">
-      <h2 class="section-title">行政表單</h2>
-      <div class="cards">
-        <div class="card pending">
-          <div class="card-icon">&#128276;</div>
-          <div class="card-text">
-            <div class="card-number">0</div>
-            <div class="card-label">待簽核</div>
+      <div class="overview-section">
+        <h2 class="section-title">行政表單－我的申請</h2>
+        <div class="cards">
+          <div class="card clickable pending" onclick="goToOverviewFiltered('pending')">
+            <div class="card-icon">&#128276;</div>
+            <div class="card-text">
+              <div class="card-number" id="ovMyPendingCount">0</div>
+              <div class="card-label">等待簽核</div>
+            </div>
+          </div>
+          <div class="card clickable rejected" onclick="goToOverviewFiltered('rejected')">
+            <div class="card-icon">&#9888;</div>
+            <div class="card-text">
+              <div class="card-number" id="ovMyRejectedCount">0</div>
+              <div class="card-label">退回待處理</div>
+            </div>
+          </div>
+          <div class="card clickable approved" onclick="goToOverviewFiltered('approved14')">
+            <div class="card-icon">&#10003;</div>
+            <div class="card-text">
+              <div class="card-number" id="ovMyApproved14Count">0</div>
+              <div class="card-label">近14天已核准</div>
+            </div>
           </div>
         </div>
-        <div class="card rejected">
-          <div class="card-icon">&#9888;</div>
-          <div class="card-text">
-            <div class="card-number">0</div>
-            <div class="card-label">退回待處理</div>
-          </div>
-        </div>
-        <div class="card approved">
-          <div class="card-icon">&#10003;</div>
-          <div class="card-text">
-            <div class="card-number">0</div>
-            <div class="card-label">近14天已核准</div>
+      </div>
+
+      <div class="overview-section">
+        <h2 class="section-title">行政表單－簽核作業</h2>
+        <div class="cards">
+          <div class="card clickable pending" onclick="goToOverviewFiltered('toSign')">
+            <div class="card-icon">&#128276;</div>
+            <div class="card-text">
+              <div class="card-number" id="ovToSignCount">0</div>
+              <div class="card-label">待我簽核</div>
+            </div>
           </div>
         </div>
       </div>
@@ -1765,15 +1850,20 @@
         <div class="filter-grid">
           <div class="form-field">
             <label>簽核狀態</label>
-            <select>
-              <option value="">全部</option>
-              <option>草稿</option>
-              <option>申請中</option>
-              <option>簽核中</option>
-              <option>已核准</option>
-              <option>已退回</option>
-              <option>已完成</option>
-            </select>
+            <div class="multiselect-wrap">
+              <button type="button" class="multiselect-trigger" id="statusFilterTrigger" onclick="toggleDropdown('statusFilterDropdown')">
+                <span class="multiselect-trigger-label">全部</span>
+                <span class="caret">▼</span>
+              </button>
+              <div class="dropdown multiselect-dropdown" id="statusFilterDropdown">
+                <label class="dropdown-checkbox-row"><input type="checkbox" value="草稿" onchange="updateStatusFilterLabel()"> 草稿</label>
+                <label class="dropdown-checkbox-row"><input type="checkbox" value="申請中" onchange="updateStatusFilterLabel()"> 申請中</label>
+                <label class="dropdown-checkbox-row"><input type="checkbox" value="簽核中" onchange="updateStatusFilterLabel()"> 簽核中</label>
+                <label class="dropdown-checkbox-row"><input type="checkbox" value="已核准" onchange="updateStatusFilterLabel()"> 已核准</label>
+                <label class="dropdown-checkbox-row"><input type="checkbox" value="已退回" onchange="updateStatusFilterLabel()"> 已退回</label>
+                <label class="dropdown-checkbox-row"><input type="checkbox" value="已完成" onchange="updateStatusFilterLabel()"> 已完成</label>
+              </div>
+            </div>
           </div>
           <div class="form-field">
             <label>支出科目</label>
@@ -1818,6 +1908,14 @@
             </div>
           </div>
           <div class="form-field">
+            <label>核准日期</label>
+            <div class="date-range">
+              <input type="text" id="approvalDateStart" placeholder="YYYYMMDD" maxlength="8">
+              <span>~</span>
+              <input type="text" id="approvalDateEnd" placeholder="YYYYMMDD" maxlength="8">
+            </div>
+          </div>
+          <div class="form-field">
             <label>申請人</label>
             <input type="text" placeholder="輸入姓名或員編關鍵字查詢">
           </div>
@@ -1852,6 +1950,7 @@
               <th class="cell-right">請款金額</th>
               <th>申請人</th>
               <th>申請日期</th>
+              <th>核准日期</th>
               <th style="width:40px;">複製</th>
             </tr>
           </thead>
@@ -1859,196 +1958,211 @@
             <tr>
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-draft">草稿</span></td>
-              <td></td>
+              <td class="pending-signer-cell"></td>
               <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
               <td>尚未產生單號</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>租金支出</td>
               <td class="cell-right">NT$ 0</td>
-              <td>王小明</td>
+              <td class="applicant-cell">王曉明</td>
               <td>2026年08月14日</td>
+              <td class="approval-date-cell">—</td>
               <td><button class="btn-icon" title="複製此筆" onclick="goToPage('admin-form-detail')">&#128203;</button></td>
             </tr>
             <tr>
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-rejected">已退回</span></td>
-              <td></td>
+              <td class="pending-signer-cell"></td>
               <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
               <td>CBS-PAY-2026-0033</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>文具用品</td>
               <td class="cell-right">NT$ 100</td>
-              <td>王小明</td>
+              <td class="applicant-cell">王曉明</td>
               <td>2026年08月13日</td>
+              <td class="approval-date-cell">—</td>
               <td><button class="btn-icon" title="複製此筆" onclick="goToPage('admin-form-detail')">&#128203;</button></td>
             </tr>
             <tr>
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-approved">已核准</span></td>
-              <td></td>
+              <td class="pending-signer-cell"></td>
               <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
               <td>CBS-PAY-2026-0030</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>郵資</td>
               <td class="cell-right">NT$ 10,000,000</td>
-              <td>王小明</td>
+              <td class="applicant-cell">王曉明</td>
               <td>2026年08月12日</td>
+              <td class="approval-date-cell" id="approvalDateSample1">—</td>
               <td><button class="btn-icon" title="複製此筆" onclick="goToPage('admin-form-detail')">&#128203;</button></td>
             </tr>
             <tr>
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-rejected">已退回</span></td>
-              <td></td>
+              <td class="pending-signer-cell"></td>
               <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
               <td>CBS-PAY-2026-0029</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>郵電費</td>
               <td class="cell-right">NT$ 68,000</td>
-              <td>王小明</td>
+              <td class="applicant-cell">王曉明</td>
               <td>2026年08月12日</td>
+              <td class="approval-date-cell">—</td>
               <td><button class="btn-icon" title="複製此筆" onclick="goToPage('admin-form-detail')">&#128203;</button></td>
             </tr>
             <tr>
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-rejected">已退回</span></td>
-              <td></td>
+              <td class="pending-signer-cell"></td>
               <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
               <td>CBS-PAY-2026-0028</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>旅費</td>
               <td class="cell-right">NT$ 579</td>
-              <td>王小明</td>
+              <td class="applicant-cell">王曉明</td>
               <td>2026年08月12日</td>
+              <td class="approval-date-cell">—</td>
               <td><button class="btn-icon" title="複製此筆" onclick="goToPage('admin-form-detail')">&#128203;</button></td>
             </tr>
             <tr>
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-applying">申請中</span></td>
-              <td>王課長</td>
+              <td class="pending-signer-cell">王曉明</td>
               <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
               <td>CBS-PAY-2026-0016</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>修繕費</td>
               <td class="cell-right">NT$ 2,300</td>
-              <td>王小明</td>
+              <td class="applicant-cell">王曉明</td>
               <td>2026年08月03日</td>
+              <td class="approval-date-cell">—</td>
               <td><button class="btn-icon" title="複製此筆" onclick="goToPage('admin-form-detail')">&#128203;</button></td>
             </tr>
             <tr>
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-applying">申請中</span></td>
-              <td>王課長</td>
+              <td class="pending-signer-cell">王曉明</td>
               <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
               <td>CBS-PAY-2026-0015</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>廣告費</td>
               <td class="cell-right">NT$ 100</td>
-              <td>王小明</td>
+              <td class="applicant-cell">王曉明</td>
               <td>2026年07月31日</td>
+              <td class="approval-date-cell">—</td>
               <td><button class="btn-icon" title="複製此筆" onclick="goToPage('admin-form-detail')">&#128203;</button></td>
             </tr>
             <tr>
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-draft">草稿</span></td>
-              <td></td>
+              <td class="pending-signer-cell"></td>
               <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
               <td>尚未產生單號</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>保險費</td>
               <td class="cell-right">NT$ 0</td>
-              <td>王小明</td>
+              <td class="applicant-cell">王曉明</td>
               <td>2026年07月29日</td>
+              <td class="approval-date-cell">—</td>
               <td><button class="btn-icon" title="複製此筆" onclick="goToPage('admin-form-detail')">&#128203;</button></td>
             </tr>
             <tr>
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-applying">申請中</span></td>
-              <td>王課長</td>
+              <td class="pending-signer-cell">王課長</td>
               <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
               <td>CBS-PAY-2026-0014</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>交際費</td>
               <td class="cell-right">NT$ 100</td>
-              <td>王小明</td>
+              <td class="applicant-cell">王曉明</td>
               <td>2026年07月29日</td>
+              <td class="approval-date-cell">—</td>
               <td><button class="btn-icon" title="複製此筆" onclick="goToPage('admin-form-detail')">&#128203;</button></td>
             </tr>
             <tr>
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-applying">申請中</span></td>
-              <td>王課長</td>
+              <td class="pending-signer-cell">王課長</td>
               <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
               <td>CBS-PAY-2026-0013</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>職工福利</td>
               <td class="cell-right">NT$ 100</td>
-              <td>王小明</td>
+              <td class="applicant-cell">王曉明</td>
               <td>2026年07月29日</td>
+              <td class="approval-date-cell">—</td>
               <td><button class="btn-icon" title="複製此筆" onclick="goToPage('admin-form-detail')">&#128203;</button></td>
             </tr>
             <tr>
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-applying">申請中</span></td>
-              <td>王課長</td>
+              <td class="pending-signer-cell">王課長</td>
               <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
               <td>CBS-PAY-2026-0012</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>交通費</td>
               <td class="cell-right">NT$ 150</td>
-              <td>王小明</td>
+              <td class="applicant-cell">王曉明</td>
               <td>2026年07月29日</td>
+              <td class="approval-date-cell">—</td>
               <td><button class="btn-icon" title="複製此筆" onclick="goToPage('admin-form-detail')">&#128203;</button></td>
             </tr>
             <tr>
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-applying">申請中</span></td>
-              <td>王課長</td>
+              <td class="pending-signer-cell">王課長</td>
               <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
               <td>CBS-PAY-2026-0006</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>雜項費用</td>
               <td class="cell-right">NT$ 100</td>
-              <td>王小明</td>
+              <td class="applicant-cell">王曉明</td>
               <td>2026年07月27日</td>
+              <td class="approval-date-cell">—</td>
               <td><button class="btn-icon" title="複製此筆" onclick="goToPage('admin-form-detail')">&#128203;</button></td>
             </tr>
             <tr>
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-applying">申請中</span></td>
-              <td>王課長</td>
+              <td class="pending-signer-cell">王課長</td>
               <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
               <td>CBS-PAY-2026-0005</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>租金支出</td>
               <td class="cell-right">NT$ 150</td>
-              <td>王小明</td>
+              <td class="applicant-cell">王曉明</td>
               <td>2026年07月27日</td>
+              <td class="approval-date-cell">—</td>
               <td><button class="btn-icon" title="複製此筆" onclick="goToPage('admin-form-detail')">&#128203;</button></td>
             </tr>
             <tr>
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-approved">已核准</span></td>
-              <td></td>
+              <td class="pending-signer-cell"></td>
               <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
               <td>CBS-PAY-2026-0004</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>文具用品</td>
               <td class="cell-right">NT$ 300</td>
-              <td>王小明</td>
+              <td class="applicant-cell">王曉明</td>
               <td>2026年07月23日</td>
+              <td class="approval-date-cell" id="approvalDateSample2">—</td>
               <td><button class="btn-icon" title="複製此筆" onclick="goToPage('admin-form-detail')">&#128203;</button></td>
             </tr>
             <tr>
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-signing">簽核中</span></td>
-              <td>Carlson</td>
+              <td class="pending-signer-cell">Carlson</td>
               <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
               <td>CBS-PAY-2026-0003</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>郵資</td>
               <td class="cell-right">NT$ 200,000</td>
-              <td>王小明</td>
+              <td class="applicant-cell">王曉明</td>
               <td>2026年07月23日</td>
+              <td class="approval-date-cell">—</td>
               <td><button class="btn-icon" title="複製此筆" onclick="goToPage('admin-form-detail')">&#128203;</button></td>
             </tr>
           </tbody>
@@ -3082,7 +3196,7 @@
   }
 
   document.addEventListener('click', function(e) {
-    if (!e.target.closest('.menu-wrap')) {
+    if (!e.target.closest('.menu-wrap') && !e.target.closest('.multiselect-wrap')) {
       document.querySelectorAll('.dropdown.open').forEach(function(d) { d.classList.remove('open'); });
     }
   });
@@ -3760,6 +3874,140 @@
     document.querySelectorAll('.action-btn').forEach(function(btn) { btn.textContent = actionText; });
   }
 
+  function switchListTabByLabel(label) {
+    var tabs = document.querySelectorAll('#page-admin-form-list .page-tab');
+    for (var i = 0; i < tabs.length; i++) {
+      if (tabs[i].textContent.trim() === label) {
+        switchListTab(tabs[i]);
+        return;
+      }
+    }
+  }
+
+  function pad2(n) { return (n < 10 ? '0' : '') + n; }
+
+  function formatDateChinese(d) {
+    return d.getFullYear() + '年' + pad2(d.getMonth() + 1) + '月' + pad2(d.getDate()) + '日';
+  }
+
+  function toYYYYMMDD(d) {
+    return '' + d.getFullYear() + pad2(d.getMonth() + 1) + pad2(d.getDate());
+  }
+
+  function toISODate(d) {
+    return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
+  }
+
+  function addDays(d, days) {
+    var r = new Date(d);
+    r.setDate(r.getDate() + days);
+    return r;
+  }
+
+  function initApprovalDateSamples() {
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+    var within14 = addDays(today, -5);
+    var outside14 = addDays(today, -25);
+    var el1 = document.getElementById('approvalDateSample1');
+    if (el1) {
+      el1.textContent = formatDateChinese(within14);
+      el1.setAttribute('data-date', toISODate(within14));
+    }
+    var el2 = document.getElementById('approvalDateSample2');
+    if (el2) {
+      el2.textContent = formatDateChinese(outside14);
+      el2.setAttribute('data-date', toISODate(outside14));
+    }
+  }
+
+  function loadOverviewStats() {
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+    var windowStart = addDays(today, -13);
+    var loginUser = '王曉明';
+
+    var myPending = 0, myRejected = 0, myApproved14 = 0, toSign = 0;
+
+    document.querySelectorAll('#admin-form-rows tr').forEach(function(row) {
+      var statusEl = row.querySelector('.status-badge');
+      if (!statusEl) return;
+      var status = statusEl.textContent.trim();
+      var applicantEl = row.querySelector('.applicant-cell');
+      var applicant = applicantEl ? applicantEl.textContent.trim() : '';
+      var pendingEl = row.querySelector('.pending-signer-cell');
+      var pendingSigner = pendingEl ? pendingEl.textContent.trim() : '';
+      var approvalCell = row.querySelector('.approval-date-cell');
+      var approvalDateStr = approvalCell ? approvalCell.getAttribute('data-date') : null;
+
+      if (applicant === loginUser) {
+        if (status === '申請中' || status === '簽核中') myPending++;
+        if (status === '已退回') myRejected++;
+        if (status === '已核准' && approvalDateStr) {
+          var approvalDate = new Date(approvalDateStr);
+          if (approvalDate >= windowStart && approvalDate <= today) myApproved14++;
+        }
+      }
+      if (pendingSigner === loginUser && (status === '申請中' || status === '簽核中')) {
+        toSign++;
+      }
+    });
+
+    document.getElementById('ovMyPendingCount').textContent = myPending;
+    document.getElementById('ovMyRejectedCount').textContent = myRejected;
+    document.getElementById('ovMyApproved14Count').textContent = myApproved14;
+    document.getElementById('ovToSignCount').textContent = toSign;
+  }
+
+  function setStatusFilterChecked(values) {
+    document.querySelectorAll('#statusFilterDropdown input[type=checkbox]').forEach(function(cb) {
+      cb.checked = values.indexOf(cb.value) !== -1;
+    });
+    updateStatusFilterLabel();
+  }
+
+  function updateStatusFilterLabel() {
+    var trigger = document.getElementById('statusFilterTrigger');
+    if (!trigger) return;
+    var label = trigger.querySelector('.multiselect-trigger-label');
+    var checked = Array.prototype.slice.call(document.querySelectorAll('#statusFilterDropdown input[type=checkbox]:checked'));
+    if (checked.length === 0) {
+      label.textContent = '全部';
+    } else if (checked.length <= 2) {
+      label.textContent = checked.map(function(cb) { return cb.value; }).join('、');
+    } else {
+      label.textContent = checked.length + ' 項已選';
+    }
+  }
+
+  function goToOverviewFiltered(kind) {
+    goToPage('admin-form-list');
+
+    var startInput = document.getElementById('approvalDateStart');
+    var endInput = document.getElementById('approvalDateEnd');
+    startInput.value = '';
+    endInput.value = '';
+
+    if (kind === 'pending') {
+      switchListTabByLabel('我的申請單');
+      setStatusFilterChecked(['申請中', '簽核中']);
+    } else if (kind === 'rejected') {
+      switchListTabByLabel('我的申請單');
+      setStatusFilterChecked(['已退回']);
+    } else if (kind === 'approved14') {
+      switchListTabByLabel('我的申請單');
+      setStatusFilterChecked(['已核准']);
+      var today = new Date();
+      today.setHours(0, 0, 0, 0);
+      var windowStart = addDays(today, -13);
+      startInput.value = toYYYYMMDD(windowStart);
+      endInput.value = toYYYYMMDD(today);
+    } else if (kind === 'toSign') {
+      switchListTabByLabel('待簽核表單');
+      setStatusFilterChecked([]);
+    }
+  }
+
   function toggleSelectAll() {
     var all = document.getElementById('selectAllCheckbox').checked;
     document.querySelectorAll('.row-checkbox').forEach(function(cb) { cb.checked = all; });
@@ -3778,6 +4026,9 @@
       selectAll.checked = boxes.length > 0 && checked.length === boxes.length;
     }
   }
+
+  initApprovalDateSamples();
+  loadOverviewStats();
 </script>
 
 </body>
