@@ -1907,6 +1907,7 @@
         <button class="page-tab active" onclick="switchListTab(this)">我的申請單</button>
         <button class="page-tab" onclick="switchListTab(this)">待簽核表單</button>
         <button class="page-tab" onclick="switchListTab(this)">已簽核表單</button>
+        <button class="page-tab" onclick="switchListTab(this)">全部表單</button>
       </div>
       <div class="advanced-filter-panel" id="advancedFilterPanel">
         <div class="filter-grid">
@@ -1991,8 +1992,6 @@
       <div class="list-status-bar">
         <span class="list-status-text">查詢共 <b id="totalCount">15</b> 筆,已勾選 <b id="selectedCount">0</b> 筆</span>
         <div class="list-status-actions" id="bulkActions">
-          <button class="btn btn-outline btn-sm" disabled>列印</button>
-          <span class="action-divider"></span>
           <button class="btn btn-outline btn-sm" disabled>撤回</button>
           <button class="btn btn-outline btn-sm" disabled>刪除</button>
         </div>
@@ -2013,6 +2012,7 @@
               <th>申請人</th>
               <th>申請日期</th>
               <th>核准日期</th>
+              <th style="width:40px;">列印</th>
               <th style="width:40px;">複製</th>
             </tr>
           </thead>
@@ -2021,7 +2021,7 @@
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-draft">草稿</span></td>
               <td class="pending-signer-cell"></td>
-              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail(this)">編輯</button></td>
               <td>尚未產生單號</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>租金支出</td>
@@ -2029,13 +2029,14 @@
               <td class="applicant-cell">王曉明</td>
               <td>2026年08月14日</td>
               <td class="approval-date-cell">—</td>
+              <td><button class="btn-icon" title="列印此筆" onclick="printSingleForm(event)">&#128424;</button></td>
               <td><button class="btn-icon" title="複製此筆" onclick="goToPage('admin-form-detail')">&#128203;</button></td>
             </tr>
             <tr>
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-rejected">已退回</span></td>
               <td class="pending-signer-cell"></td>
-              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail(this)">編輯</button></td>
               <td>CBS-PAY-2026-0033</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>文具用品</td>
@@ -2043,13 +2044,14 @@
               <td class="applicant-cell">王曉明</td>
               <td>2026年08月13日</td>
               <td class="approval-date-cell">—</td>
+              <td><button class="btn-icon" title="列印此筆" onclick="printSingleForm(event)">&#128424;</button></td>
               <td><button class="btn-icon" title="複製此筆" onclick="goToPage('admin-form-detail')">&#128203;</button></td>
             </tr>
             <tr>
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-approved">已核准</span></td>
               <td class="pending-signer-cell"></td>
-              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail(this)">編輯</button></td>
               <td>CBS-PAY-2026-0030</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>郵資</td>
@@ -2057,13 +2059,14 @@
               <td class="applicant-cell">王曉明</td>
               <td>2026年08月12日</td>
               <td class="approval-date-cell" id="approvalDateSample1">—</td>
+              <td><button class="btn-icon" title="列印此筆" onclick="printSingleForm(event)">&#128424;</button></td>
               <td><button class="btn-icon" title="複製此筆" onclick="goToPage('admin-form-detail')">&#128203;</button></td>
             </tr>
             <tr>
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-rejected">已退回</span></td>
               <td class="pending-signer-cell"></td>
-              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail(this)">編輯</button></td>
               <td>CBS-PAY-2026-0029</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>郵電費</td>
@@ -2071,13 +2074,14 @@
               <td class="applicant-cell">王曉明</td>
               <td>2026年08月12日</td>
               <td class="approval-date-cell">—</td>
+              <td><button class="btn-icon" title="列印此筆" onclick="printSingleForm(event)">&#128424;</button></td>
               <td><button class="btn-icon" title="複製此筆" onclick="goToPage('admin-form-detail')">&#128203;</button></td>
             </tr>
             <tr>
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-rejected">已退回</span></td>
               <td class="pending-signer-cell"></td>
-              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail(this)">編輯</button></td>
               <td>CBS-PAY-2026-0028</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>旅費</td>
@@ -2085,13 +2089,14 @@
               <td class="applicant-cell">王曉明</td>
               <td>2026年08月12日</td>
               <td class="approval-date-cell">—</td>
+              <td><button class="btn-icon" title="列印此筆" onclick="printSingleForm(event)">&#128424;</button></td>
               <td><button class="btn-icon" title="複製此筆" onclick="goToPage('admin-form-detail')">&#128203;</button></td>
             </tr>
             <tr>
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-applying">申請中</span></td>
               <td class="pending-signer-cell">王曉明</td>
-              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail(this)">編輯</button></td>
               <td>CBS-PAY-2026-0016</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>修繕費</td>
@@ -2099,13 +2104,14 @@
               <td class="applicant-cell">王曉明</td>
               <td>2026年08月03日</td>
               <td class="approval-date-cell">—</td>
+              <td><button class="btn-icon" title="列印此筆" onclick="printSingleForm(event)">&#128424;</button></td>
               <td><button class="btn-icon" title="複製此筆" onclick="goToPage('admin-form-detail')">&#128203;</button></td>
             </tr>
             <tr>
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-applying">申請中</span></td>
               <td class="pending-signer-cell">王曉明</td>
-              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail(this)">編輯</button></td>
               <td>CBS-PAY-2026-0015</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>廣告費</td>
@@ -2113,13 +2119,14 @@
               <td class="applicant-cell">王曉明</td>
               <td>2026年07月31日</td>
               <td class="approval-date-cell">—</td>
+              <td><button class="btn-icon" title="列印此筆" onclick="printSingleForm(event)">&#128424;</button></td>
               <td><button class="btn-icon" title="複製此筆" onclick="goToPage('admin-form-detail')">&#128203;</button></td>
             </tr>
             <tr>
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-draft">草稿</span></td>
               <td class="pending-signer-cell"></td>
-              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail(this)">編輯</button></td>
               <td>尚未產生單號</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>保險費</td>
@@ -2127,13 +2134,14 @@
               <td class="applicant-cell">王曉明</td>
               <td>2026年07月29日</td>
               <td class="approval-date-cell">—</td>
+              <td><button class="btn-icon" title="列印此筆" onclick="printSingleForm(event)">&#128424;</button></td>
               <td><button class="btn-icon" title="複製此筆" onclick="goToPage('admin-form-detail')">&#128203;</button></td>
             </tr>
             <tr>
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-applying">申請中</span></td>
               <td class="pending-signer-cell">王課長</td>
-              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail(this)">編輯</button></td>
               <td>CBS-PAY-2026-0014</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>交際費</td>
@@ -2141,13 +2149,14 @@
               <td class="applicant-cell">王曉明</td>
               <td>2026年07月29日</td>
               <td class="approval-date-cell">—</td>
+              <td><button class="btn-icon" title="列印此筆" onclick="printSingleForm(event)">&#128424;</button></td>
               <td><button class="btn-icon" title="複製此筆" onclick="goToPage('admin-form-detail')">&#128203;</button></td>
             </tr>
             <tr>
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-applying">申請中</span></td>
               <td class="pending-signer-cell">王課長</td>
-              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail(this)">編輯</button></td>
               <td>CBS-PAY-2026-0013</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>職工福利</td>
@@ -2155,13 +2164,14 @@
               <td class="applicant-cell">王曉明</td>
               <td>2026年07月29日</td>
               <td class="approval-date-cell">—</td>
+              <td><button class="btn-icon" title="列印此筆" onclick="printSingleForm(event)">&#128424;</button></td>
               <td><button class="btn-icon" title="複製此筆" onclick="goToPage('admin-form-detail')">&#128203;</button></td>
             </tr>
             <tr>
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-applying">申請中</span></td>
               <td class="pending-signer-cell">王課長</td>
-              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail(this)">編輯</button></td>
               <td>CBS-PAY-2026-0012</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>交通費</td>
@@ -2169,13 +2179,14 @@
               <td class="applicant-cell">王曉明</td>
               <td>2026年07月29日</td>
               <td class="approval-date-cell">—</td>
+              <td><button class="btn-icon" title="列印此筆" onclick="printSingleForm(event)">&#128424;</button></td>
               <td><button class="btn-icon" title="複製此筆" onclick="goToPage('admin-form-detail')">&#128203;</button></td>
             </tr>
             <tr>
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-applying">申請中</span></td>
               <td class="pending-signer-cell">王課長</td>
-              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail(this)">編輯</button></td>
               <td>CBS-PAY-2026-0006</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>雜項費用</td>
@@ -2183,13 +2194,14 @@
               <td class="applicant-cell">王曉明</td>
               <td>2026年07月27日</td>
               <td class="approval-date-cell">—</td>
+              <td><button class="btn-icon" title="列印此筆" onclick="printSingleForm(event)">&#128424;</button></td>
               <td><button class="btn-icon" title="複製此筆" onclick="goToPage('admin-form-detail')">&#128203;</button></td>
             </tr>
             <tr>
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-applying">申請中</span></td>
               <td class="pending-signer-cell">王課長</td>
-              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail(this)">編輯</button></td>
               <td>CBS-PAY-2026-0005</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>租金支出</td>
@@ -2197,13 +2209,14 @@
               <td class="applicant-cell">王曉明</td>
               <td>2026年07月27日</td>
               <td class="approval-date-cell">—</td>
+              <td><button class="btn-icon" title="列印此筆" onclick="printSingleForm(event)">&#128424;</button></td>
               <td><button class="btn-icon" title="複製此筆" onclick="goToPage('admin-form-detail')">&#128203;</button></td>
             </tr>
             <tr>
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-approved">已核准</span></td>
               <td class="pending-signer-cell"></td>
-              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail(this)">編輯</button></td>
               <td>CBS-PAY-2026-0004</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>文具用品</td>
@@ -2211,13 +2224,14 @@
               <td class="applicant-cell">王曉明</td>
               <td>2026年07月23日</td>
               <td class="approval-date-cell" id="approvalDateSample2">—</td>
+              <td><button class="btn-icon" title="列印此筆" onclick="printSingleForm(event)">&#128424;</button></td>
               <td><button class="btn-icon" title="複製此筆" onclick="goToPage('admin-form-detail')">&#128203;</button></td>
             </tr>
             <tr>
               <td><input type="checkbox" class="row-checkbox" onchange="updateSelectionBar()"></td>
               <td><span class="status-badge status-signing">簽核中</span></td>
               <td class="pending-signer-cell">Carlson</td>
-              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail()">編輯</button></td>
+              <td><button class="btn btn-outline btn-sm action-btn" onclick="openFormDetail(this)">編輯</button></td>
               <td>CBS-PAY-2026-0003</td>
               <td class="truncate-cell" title="網家跨境服務股份有限公司">網家跨境服務...</td>
               <td>郵資</td>
@@ -2225,6 +2239,7 @@
               <td class="applicant-cell">王曉明</td>
               <td>2026年07月23日</td>
               <td class="approval-date-cell">—</td>
+              <td><button class="btn-icon" title="列印此筆" onclick="printSingleForm(event)">&#128424;</button></td>
               <td><button class="btn-icon" title="複製此筆" onclick="goToPage('admin-form-detail')">&#128203;</button></td>
             </tr>
           </tbody>
@@ -2351,7 +2366,6 @@
                 <option value="中華電信股份有限公司">中華電信股份有限公司</option>
                 <option value="__new__">＋ 新增匯款對象</option>
               </select>
-              <span class="field-hint" id="remitPayeeHint" style="display:none;">以上資料取自「匯款資料維護」,如需修改請至該處調整。</span>
             </div>
             <div class="form-field form-field-full" id="remitNameSelectField" style="display:none;">
               <label><span class="req">*</span>選擇匯款對象</label>
@@ -3439,10 +3453,13 @@
     document.querySelectorAll('.dropdown.open').forEach(function(d) { d.classList.remove('open'); });
   }
 
-  function openFormDetail() {
-    var activeTab = document.querySelector('#page-admin-form-list .page-tab.active');
-    var label = activeTab ? activeTab.textContent.trim() : '';
-    if (label === '待簽核表單') {
+  function openFormDetail(btn) {
+    // 操作按鈕文字即代表該筆當下的動作(編輯/簽核/查看),
+    // 「全部表單」Tab 為每列各自標示動作文字(詳見 switchListTab),
+    // 其餘三個 Tab 則沿用原本「整個 Tab 統一動作文字」的 Demo 簡化邏輯,
+    // 故統一改由按鈕自身文字判斷是否進入簽核模式,不再仰賴目前作用中的 Tab。
+    var actionLabel = btn ? btn.textContent.trim() : '';
+    if (actionLabel === '簽核') {
       goToPage('admin-form-detail', 'sign');
     } else {
       goToPage('admin-form-detail');
@@ -3491,7 +3508,7 @@
     updatePayeeFields();
     document.getElementById('remitPayeeSelect').value = '__new__';
     document.getElementById('remitDetailBox').style.display = 'grid';
-    document.getElementById('remitAccount').value = '1234567890123';
+    document.getElementById('remitAccount').value = maskAccountNumber('1234567890123');
     document.getElementById('remitNameText').value = '王小明';
     document.getElementById('bankName').value = '822 中國信託商業銀行';
     document.getElementById('branchName').value = '城東分行';
@@ -4107,6 +4124,15 @@
     '中華電信股份有限公司': { account: '9876543210987', name: '中華電信股份有限公司', bank: '004 台灣銀行', branch: '營業部' }
   };
 
+  // 匯款帳號遮碼:僅顯示後五碼,其餘以「•」遮蔽;僅套用於既有匯款對象帶入之唯讀顯示,
+  // 使用者透過「＋新增匯款對象」手動輸入時仍為明碼(輸入當下需可核對正確性)
+  function maskAccountNumber(acc) {
+    if (!acc) return '';
+    var digits = String(acc);
+    if (digits.length <= 5) return digits;
+    return '•'.repeat(digits.length - 5) + digits.slice(-5);
+  }
+
   function updatePayeeFields() {
     var company = document.getElementById('payeeCompany').checked;
     document.getElementById('remitPayeeSelectField').style.display = company ? 'flex' : 'none';
@@ -4121,7 +4147,6 @@
     var box = document.getElementById('remitDetailBox');
     if (!val) {
       box.style.display = 'none';
-      document.getElementById('remitPayeeHint').style.display = 'none';
       document.getElementById('remitAccount').value = '';
       document.getElementById('remitNameText').value = '';
       document.getElementById('bankName').value = '';
@@ -4131,7 +4156,7 @@
     box.style.display = 'grid';
     var isNew = (val === '__new__');
     var data = REMIT_COMPANY_DATA[val];
-    document.getElementById('remitAccount').value = isNew ? '' : (data ? data.account : '');
+    document.getElementById('remitAccount').value = isNew ? '' : (data ? maskAccountNumber(data.account) : '');
     document.getElementById('remitNameText').value = isNew ? '' : (data ? data.name : '');
     document.getElementById('bankName').value = isNew ? '' : (data ? data.bank : '');
     document.getElementById('branchName').value = isNew ? '' : (data ? data.branch : '');
@@ -4139,7 +4164,6 @@
     document.getElementById('remitNameText').disabled = !isNew;
     document.getElementById('bankName').disabled = !isNew;
     document.getElementById('branchName').disabled = !isNew;
-    document.getElementById('remitPayeeHint').style.display = isNew ? 'none' : '';
   }
 
   function addInvoiceNumber() {
@@ -4194,15 +4218,35 @@
     toggle.classList.toggle('closed');
   }
 
+  // 「全部表單」Tab 每列動作文字依該列實際狀態個別判斷(而非整個 Tab 統一文字):
+  // 待簽核者為登入者本人且單據仍在進行中 => 簽核;草稿/已退回(登入者可繼續編輯) => 編輯;其餘(已核准、待其他人簽核中) => 查看。
+  function getRowActionLabel(row) {
+    var loginUser = '王曉明';
+    var statusEl = row.querySelector('.status-badge');
+    var status = statusEl ? statusEl.textContent.trim() : '';
+    var pendingEl = row.querySelector('.pending-signer-cell');
+    var pendingSigner = pendingEl ? pendingEl.textContent.trim() : '';
+    if (pendingSigner === loginUser && (status === '申請中' || status === '簽核中')) return '簽核';
+    if (status === '草稿' || status === '已退回') return '編輯';
+    return '查看';
+  }
+
   function switchListTab(el) {
     el.parentElement.querySelectorAll('.page-tab').forEach(function(t) { t.classList.remove('active'); });
     el.classList.add('active');
 
     var label = el.textContent.trim();
+    if (label === '全部表單') {
+      document.querySelectorAll('#admin-form-rows tr').forEach(function(row) {
+        var btn = row.querySelector('.action-btn');
+        if (btn) btn.textContent = getRowActionLabel(row);
+      });
+      return;
+    }
     var actionText = '編輯';
     if (label === '待簽核表單') actionText = '簽核';
     else if (label === '已簽核表單') actionText = '查看';
-    document.querySelectorAll('.action-btn').forEach(function(btn) { btn.textContent = actionText; });
+    document.querySelectorAll('#admin-form-rows .action-btn').forEach(function(btn) { btn.textContent = actionText; });
   }
 
   function switchListTabByLabel(label) {
@@ -4343,6 +4387,11 @@
     var all = document.getElementById('selectAllCheckbox').checked;
     document.querySelectorAll('.row-checkbox').forEach(function(cb) { cb.checked = all; });
     updateSelectionBar();
+  }
+
+  function printSingleForm(event) {
+    if (event) event.stopPropagation();
+    // ==[Demo 簡化]== 單筆列印目前僅為畫面呈現,尚未定義實際動作與 API
   }
 
   function updateSelectionBar() {
