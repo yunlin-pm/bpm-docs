@@ -241,6 +241,21 @@
   .shot-pair figure { margin: 0; min-width: 0; }
   .shot-pair .shot { margin: 0 0 7px; }
   .shot-pair figcaption { color: var(--text-gray); font-size: 12px; text-align: center; }
+  .document-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--navy);
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    box-shadow: 0 2px 5px rgba(21, 65, 105, 0.18);
+    transition: background-color 0.15s ease, transform 0.15s ease;
+  }
+  .document-link::before { content: 'PDF'; font-size: 10px; border: 1px solid rgba(255,255,255,0.7); border-radius: 3px; padding: 1px 4px; }
+  .document-link:hover { background: #123e67; transform: translateY(-1px); }
+  .document-link:focus-visible { outline: 3px solid rgba(239, 143, 0, 0.45); outline-offset: 2px; }
 </style>
 </head>
 <body>
